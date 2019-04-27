@@ -18,19 +18,19 @@ namespace FloodIt
         {
             this.pictureBox1 = new PictureBox();
             this.grid = new Grid(280);
-            ((System.ComponentModel.ISupportInitialize)(pictureBox1)).BeginInit();
-            this.SuspendLayout();
             // 
             // pictureBox1
             // 
             this.MinimumSize = new Size(600, 600);
+
             this.pictureBox1.Size = new Size(grid.Size, grid.Size);
             this.pictureBox1.Location = new Point(DisplayRectangle.Width/2 - pictureBox1.Width /2,
                 DisplayRectangle.Height / 2 - pictureBox1.Height / 2);
+            this.pictureBox1.BorderStyle = BorderStyle.FixedSingle;
             this.pictureBox1.Anchor = AnchorStyles.None;
             
             ///Events///
-            this.pictureBox1.Click += new EventHandler(this.FuckHandler);
+            this.pictureBox1.Click += new EventHandler(this.PressMouse);
             this.pictureBox1.Paint += new PaintEventHandler(DisplayGrid);
             
             // 
@@ -44,8 +44,6 @@ namespace FloodIt
             ///Events///
             this.Shown += new EventHandler(CreateGrid);
 
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
         }
 
         //
@@ -57,22 +55,16 @@ namespace FloodIt
         }
         private void DisplayGrid(object sender, PaintEventArgs e)
         {
-                ((PictureBox)sender).Image = grid.Display;
+            ((PictureBox)sender).Image = grid.Display;
         }
 
-
-        private void FuckHandler(object sender, EventArgs e)
+        private void PressMouse(object sender, EventArgs e)
         {
-            //Получить цвет нажатого блока на доске
+            //get color selected cell
             Point point = MousePosition;
             Color color = Win32.GetPixelColor(point.X, point.Y);
 
-            //for debug
-            Console.WriteLine(color.Name);
-
-            var g = Graphics.FromImage(grid.Display);
-            g.FillRectangle(new SolidBrush(color), new Rectangle(0, 0, 160, 20));
-
+            grid.Flood(color);
         }
     }
 }
