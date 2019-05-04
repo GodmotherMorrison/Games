@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloodIt", "FloodIt\FloodIt.csproj", "{6330FE67-99CA-49BC-9FB2-638D1E004FF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hi-Q", "Hi-Q\Hi-Q.csproj", "{7EFF452F-C06A-4A9D-91B9-57F6FE951649}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PegSolitaire", "PegSolitaire\PegSolitaire.csproj", "{C4AAFC4E-4288-48D6-A52F-C129010BD111}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{6330FE67-99CA-49BC-9FB2-638D1E004FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6330FE67-99CA-49BC-9FB2-638D1E004FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6330FE67-99CA-49BC-9FB2-638D1E004FF7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7EFF452F-C06A-4A9D-91B9-57F6FE951649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EFF452F-C06A-4A9D-91B9-57F6FE951649}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EFF452F-C06A-4A9D-91B9-57F6FE951649}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EFF452F-C06A-4A9D-91B9-57F6FE951649}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4AAFC4E-4288-48D6-A52F-C129010BD111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4AAFC4E-4288-48D6-A52F-C129010BD111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4AAFC4E-4288-48D6-A52F-C129010BD111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4AAFC4E-4288-48D6-A52F-C129010BD111}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

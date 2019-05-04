@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Hi-Q")]
+[assembly: AssemblyTitle("PegSolitaire")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Hi-Q")]
+[assembly: AssemblyProduct("PegSolitaire")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7eff452f-c06a-4a9d-91b9-57f6fe951649")]
+[assembly: Guid("c4aafc4e-4288-48d6-a52f-c129010bd111")]
 
 // Version information for an assembly consists of the following four values:
 //
