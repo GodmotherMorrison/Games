@@ -13,6 +13,8 @@ namespace PegSolitaire
 
     class Board
     {
+        enum cellState { notExit, hole, peg }
+
         public int Size
         {
             get
@@ -30,7 +32,7 @@ namespace PegSolitaire
 
         public Bitmap Display { get; set; }
 
-        cell[,] board { get; set; }
+        cellState[,] board { get; set; }
 
 
         private Point selectedPegs { get; set; }
@@ -45,19 +47,19 @@ namespace PegSolitaire
 
         public void Create()
         {
-            board = new cell[numberOfCells, numberOfCells];
+            board = new cellState[numberOfCells, numberOfCells];
 
 
 
             for (int i = 2; i < 5; i++)
                 for (int j = 0; j < 7; j++)
-                    board[i, j] = new cell { value = true };
+                    board[i, j] = cellState.peg;
 
             for (int i = 0; i < 7; i++)
                 for (int j = 2; j < 5; j++)
-                    board[i, j] = new cell { value = true };
+                    board[i, j] = cellState.peg;
 
-            board[3, 3] = new cell { value = false };
+            board[3, 3] = cellState.hole;
 
 
             Draw();
@@ -71,22 +73,18 @@ namespace PegSolitaire
                 for (int i = 0; i < numberOfCells; i++)
                     for (int j = 0; j < numberOfCells; j++)
                     {
-                        try
+                        if (board[i, j] == cellState.peg)
+                            g.FillEllipse(new SolidBrush(Color.Red), new Rectangle(i * sizeOfCell, j * sizeOfCell,
+                                sizeOfCell, sizeOfCell));
+                        else if (board[i, j] == cellState.hole)
                         {
-                            if (board[i, j].value)
-                                g.FillEllipse(new SolidBrush(Color.Red), new Rectangle(i * sizeOfCell, j * sizeOfCell,
-                                    sizeOfCell, sizeOfCell));
-                            else
-                            {
-                                g.FillEllipse(new SolidBrush(Color.White), new Rectangle(i * sizeOfCell, j * sizeOfCell,
-                                    sizeOfCell, sizeOfCell));
-                                g.DrawEllipse(Pens.Red, new Rectangle(i * sizeOfCell, j * sizeOfCell,
-                                    sizeOfCell, sizeOfCell));
+                            g.FillEllipse(new SolidBrush(Color.White), new Rectangle(i * sizeOfCell, j * sizeOfCell,
+                                sizeOfCell, sizeOfCell));
+                            g.DrawEllipse(Pens.Red, new Rectangle(i * sizeOfCell, j * sizeOfCell,
+                                sizeOfCell, sizeOfCell));
 
-                            }
                         }
 
-                        catch (NullReferenceException) { }
                     }
             }
         }
@@ -110,7 +108,7 @@ namespace PegSolitaire
                 //restore
                 Draw();
 
-                if (board[i, j] != null && board[i, j].value)
+                if (board[i, j] == cellState.peg)
                 {
                     GetVariantsOfMove(position);
                 }
@@ -143,7 +141,7 @@ namespace PegSolitaire
 
                 try
                 {
-                    if (board[i, j] != null && !board[i, j].value)
+                    if (board[i, j] == cellState.hole)
                     {
                         g.FillEllipse(new SolidBrush(Color.Orange), new Rectangle(j * sizeOfCell, i * sizeOfCell,
                             sizeOfCell, sizeOfCell));
@@ -166,28 +164,28 @@ namespace PegSolitaire
 
             try
             {
-                if (board[i - 1, j] != null && board[i - 1, j].value)
+                if (board[i - 1, j] == cellState.peg)
                     neighbors.Add(new Point(i - 1, j));
             }
             catch (IndexOutOfRangeException) { }
 
             try
             {
-                if (board[i, j + 1] != null && board[i, j + 1].value)
+                if (board[i, j + 1] == cellState.peg)
                     neighbors.Add(new Point(i, j + 1));
             }
             catch (IndexOutOfRangeException) { }
 
             try
             {
-                if (board[i + 1, j] != null && board[i + 1, j].value)
+                if (board[i + 1, j] == cellState.peg)
                     neighbors.Add(new Point(i + 1, j));
             }
             catch (IndexOutOfRangeException) { }
 
             try
             {
-                if (board[i, j - 1] != null && board[i, j - 1].value)
+                if (board[i, j - 1] == cellState.peg)
                     neighbors.Add(new Point(i, j - 1));
             }
             catch (IndexOutOfRangeException) { }
