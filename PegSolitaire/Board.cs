@@ -33,6 +33,8 @@ namespace PegSolitaire
         cell[,] board { get; set; }
 
 
+        private Point selectedPegs { get; set; }
+
         public Board(int size)
         {
             this.sizeOfDisplay = size;
@@ -75,8 +77,13 @@ namespace PegSolitaire
                                 g.FillEllipse(new SolidBrush(Color.Red), new Rectangle(i * sizeOfCell, j * sizeOfCell,
                                     sizeOfCell, sizeOfCell));
                             else
+                            {
+                                g.FillEllipse(new SolidBrush(Color.White), new Rectangle(i * sizeOfCell, j * sizeOfCell,
+                                    sizeOfCell, sizeOfCell));
                                 g.DrawEllipse(Pens.Red, new Rectangle(i * sizeOfCell, j * sizeOfCell,
                                     sizeOfCell, sizeOfCell));
+
+                            }
                         }
 
                         catch (NullReferenceException) { }
@@ -86,35 +93,37 @@ namespace PegSolitaire
 
         public void Update(Point location, Point sizePB)
         {
-            Console.WriteLine("SizeOFDisplay = " + sizeOfDisplay);
+            //Console.WriteLine("SizeOFDisplay = " + sizeOfDisplay);
 
             if (!TryGetLocationOnBoard(ref location, sizePB))
                 return;
 
+            Point position = ConverterToIndex(location);
 
-            int i = location.Y;
-            int j = location.X;
-
-            //position on the board - [i, j]
-            Point position = new Point(i, j);
+            int i = position.X;
+            int j = position.Y;
 
             Console.WriteLine(position.X.ToString() + " " + position.Y.ToString());
 
-
-            if (true)
+            if (Display.GetPixel(position.X, position.Y) != Color.Orange)
             {
                 //restore
                 Draw();
 
                 if (board[i, j] != null && board[i, j].value)
                 {
-                    //выбираем возможные варианты хода, подсвеичвая их зеленым
-                    // саму шашку изменяем на другой цвет
-
                     GetVariantsOfMove(position);
                 }
 
             }
+        }
+
+        private Point ConverterToIndex(Point location)
+        {
+            location.X = location.X / (sizeOfDisplay / numberOfCells);
+            location.Y = location.Y / (sizeOfDisplay / numberOfCells);
+
+            return new Point(location.Y, location.X);
         }
 
         private void GetVariantsOfMove(Point position)
@@ -131,41 +140,21 @@ namespace PegSolitaire
 
                 int i = 2 * neighbour.X - position.X;
                 int j = 2 * neighbour.Y - position.Y;
-                
+
                 try
                 {
                     if (board[i, j] != null && !board[i, j].value)
                     {
-                        g.FillEllipse(new SolidBrush(Color.Green), new Rectangle(i * sizeOfCell, j * sizeOfCell,
+                        g.FillEllipse(new SolidBrush(Color.Orange), new Rectangle(j * sizeOfCell, i * sizeOfCell,
                             sizeOfCell, sizeOfCell));
                         g.FillEllipse(new SolidBrush(Color.DarkRed), new Rectangle(position.Y * sizeOfCell, position.X * sizeOfCell,
                             sizeOfCell, sizeOfCell));
+                        selectedPegs = new Point(i, j);
                     }
 
                 }
                 catch (IndexOutOfRangeException) { }
             }
-
-            //foreach (var neighbour in Neighbors)
-            // if(2*neighbour - tempLocation)
-            //+
-            //var g = Graphics.FromImage(this.Display);
-
-            //try
-            //{
-            //    if (board[x, y - 1].value && !board[x, y - 2].value)
-            //    {
-            //        g.FillEllipse(new SolidBrush(Color.Green), new Rectangle(x * sizeOfCell, (y - 2) * sizeOfCell,
-            //    sizeOfCell, sizeOfCell));
-            //        g.FillEllipse(new SolidBrush(Color.GreenYellow), new Rectangle(x * sizeOfCell, y * sizeOfCell,
-            //    sizeOfCell, sizeOfCell));
-            //    }
-
-
-            //}
-            //catch (IndexOutOfRangeException) { }
-
-
         }
 
         private List<Point> FindNeighbors(Point position)
@@ -178,7 +167,7 @@ namespace PegSolitaire
             try
             {
                 if (board[i - 1, j] != null && board[i - 1, j].value)
-                neighbors.Add(new Point(i - 1, j));
+                    neighbors.Add(new Point(i - 1, j));
             }
             catch (IndexOutOfRangeException) { }
 
@@ -209,8 +198,8 @@ namespace PegSolitaire
         private bool TryGetLocationOnBoard(ref Point location, Point sizePB)
         {
 
-            double x = location.X - (sizePB.X - sizePB.Y) / 2;
-            double y = location.Y;
+            int x = location.X - (sizePB.X - sizePB.Y) / 2;
+            int y = location.Y;
 
             Console.WriteLine(x.ToString() + " " + y.ToString());
 
@@ -220,11 +209,8 @@ namespace PegSolitaire
             //x = x / sizeImagePB * Size;
             //y = y / sizeImagePB * Size;
 
-            x = x / (sizeOfDisplay / numberOfCells);
-            y = y / (sizeOfDisplay / numberOfCells);
 
-
-            location = new Point((int)x, (int)y);
+            location = new Point(x, y);
 
             return true;
         }
