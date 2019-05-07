@@ -15,6 +15,7 @@ namespace PegSolitaire
         {
             this.board1 = new Board(pictureBox1.Height);
             board1.Create();
+            board1.Draw();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -29,7 +30,7 @@ namespace PegSolitaire
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
         {
-            board1.sizeOfDisplay = pictureBox1.Height;
+            board1.SizeOfDisplay = pictureBox1.Height;
         }
     }
 }
