@@ -67,7 +67,7 @@ namespace PegSolitaire
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private Board board1;
+        private GameLogic game;
     }
 }
 

@@ -5,19 +5,15 @@ using System.Windows.Forms;
 
 namespace PegSolitaire
 {
-    class Board
+
+    class GameLogic
     {
-        public Board(int size)
+        public GameLogic(int size)
         {
             this.SizeOfDisplay = size;
             this.Display = new Bitmap(this.GetSize(), this.GetSize());
             VariantsOfMove = new List<Point>();
-
         }
-
-        private enum CellState { notExit, hole, peg }
-
-        private int NumberOfCells => 7;
 
         public int GetSize()
         {
@@ -27,49 +23,31 @@ namespace PegSolitaire
 
         private int GetSizeOfCell()
         {
-            return GetSize() / NumberOfCells;
+            return GetSize() / Game.NumberOfCells;
         }
 
         public int SizeOfDisplay { get; set; }
 
         public Bitmap Display { get; set; }
 
-        CellState[,] GameBoard { get; set; }
-
         private List<Point> VariantsOfMove { get; set; }
         private Point selectedPeg { get; set; }
 
 
-
-        public void Create()
-        {
-            GameBoard = new CellState[NumberOfCells, NumberOfCells];
-
-            for (int i = 2; i < 5; i++)
-                for (int j = 0; j < 7; j++)
-                    GameBoard[i, j] = CellState.peg;
-
-            for (int i = 0; i < 7; i++)
-                for (int j = 2; j < 5; j++)
-                    GameBoard[i, j] = CellState.peg;
-
-            GameBoard[3, 3] = CellState.hole;
-        }
-
-        public void Draw()
+        public void DrawBoard()
         {
             using (var graphics = Graphics.FromImage(this.Display))
             {
-                for (int i = 0; i < NumberOfCells; i++)
+                for (int i = 0; i < Game.NumberOfCells; i++)
                 {
-                    for (int j = 0; j < NumberOfCells; j++)
+                    for (int j = 0; j < Game.NumberOfCells; j++)
                     {
-                        switch (GameBoard[i, j])
+                        switch (Game.Board[i, j])
                         {
-                            case CellState.peg:
-                                DrawPeg(graphics, i, j);
+                            case Game.CellState.peg:
+                                DrawPeg(graphics, Color.Red, i, j);
                                 break;
-                            case CellState.hole:
+                            case Game.CellState.hole:
                                 DrawHole(graphics, i, j);
                                 break;
                         }
@@ -78,97 +56,75 @@ namespace PegSolitaire
             }
         }
 
-        private void DrawHole(Graphics graphics, int i, int j)
-        {
-
-            var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
-
-            graphics.FillEllipse(new SolidBrush(Color.White), cell);
-            graphics.DrawEllipse(Pens.Red, cell);
-        }
-
-        private void DrawPeg(Graphics graphics, int i, int j)
+        private void DrawHole(Graphics g, int i, int j)
         {
             var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
 
-            graphics.FillEllipse(new SolidBrush(Color.Red), cell);
+            g.FillEllipse(new SolidBrush(Color.White), cell);
+            g.DrawEllipse(Pens.Red, cell);
         }
 
-        public void Update(Point location, Point sizePB)
+        private void DrawPeg(Graphics g, Color color, int i, int j)
         {
-            //Console.WriteLine("SizeOFDisplay = " + sizeOfDisplay);
+            var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
+            g.FillEllipse(new SolidBrush(color), cell);
+        }
 
+        public void UpdateBoard(Point location, Point sizePB)
+        {
             if (!TryGetLocationOnBoard(ref location, sizePB))
                 return;
 
-
-
-            Point index = ConverterToIndex(location);
-
-            Console.WriteLine(index.X.ToString() + " " + index.Y.ToString());
+            var index = ConverterToIndex(location);
 
             foreach (Point varinat in VariantsOfMove)
                 if (varinat.X == index.X && varinat.Y == index.Y)
                 { 
-                    GameBoard[selectedPeg.X, selectedPeg.Y] = CellState.hole;
-                    GameBoard[varinat.X, varinat.Y] = CellState.peg;
+                    Game.Board[selectedPeg.X, selectedPeg.Y] = Game.CellState.hole;
+                    Game.Board[varinat.X, varinat.Y] = Game.CellState.peg;
+                    Game.Board[(selectedPeg.X + varinat.X) / 2, (selectedPeg.Y + varinat.Y) / 2] = Game.CellState.hole;
 
-                    int i = (selectedPeg.X + varinat.X) / 2;
-                    int j = (selectedPeg.Y + varinat.Y) / 2;
-
-                    GameBoard[i, j] = CellState.hole;
-
-                    Draw();
+                    DrawBoard();
                     VariantsOfMove.Clear();
                     return;
                 }
 
             //restore
-            Draw();
+            DrawBoard();
 
             if (IsPeg(index))
                 GetVariantsOfMove(index);
         }
 
-
-
         private Point ConverterToIndex(Point location)
         {
-            location.X = location.X / (SizeOfDisplay / NumberOfCells);
-            location.Y = location.Y / (SizeOfDisplay / NumberOfCells);
+            location.X = location.X / (SizeOfDisplay / Game.NumberOfCells);
+            location.Y = location.Y / (SizeOfDisplay / Game.NumberOfCells);
 
             return new Point(location.Y, location.X);
         }
 
         private void GetVariantsOfMove(Point position)
         {
-            //Point tempLocation
-
             var g = Graphics.FromImage(this.Display);
-            VariantsOfMove = new List<Point>();
 
-
-
+            VariantsOfMove.Clear();
             var neighbors = FindNeighbors(position);
 
             selectedPeg = new Point(position.X, position.Y);
-            Console.WriteLine("Selected Peg = " + position.X.ToString() + " "+ position.Y);
 
             foreach (var neighbour in neighbors)
             {
-                Console.WriteLine("neighbour:" + neighbour.X.ToString() + " " + neighbour.Y);
-
                 int i = 2 * neighbour.X - position.X;
                 int j = 2 * neighbour.Y - position.Y;
 
                 try
                 {
-                    if (GameBoard[i, j] == CellState.hole)
+                    if (Game.Board[i, j] == Game.CellState.hole)
                     {
-                        g.FillEllipse(new SolidBrush(Color.Orange), new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(),
-                            GetSizeOfCell(), GetSizeOfCell()));
-                        g.FillEllipse(new SolidBrush(Color.DarkRed), new Rectangle(position.Y * GetSizeOfCell(), position.X * GetSizeOfCell(),
-                            GetSizeOfCell(), GetSizeOfCell()));
+                        DrawPeg(g, Color.Orange, i, j);
+                        DrawPeg(g, Color.DarkRed, position.X, position.Y);
+
                         VariantsOfMove.Add(new Point(i, j));
                     }
 
@@ -183,10 +139,10 @@ namespace PegSolitaire
                 neighbors.Add(new Point(position.X, position.Y));
         }
 
-        private bool OutOfMap(Point position) => position.X < 0 || position.X > NumberOfCells - 1 ||
-                                                 position.Y < 0 || position.Y > NumberOfCells - 1;
+        private bool OutOfMap(Point position) => position.X < 0 || position.X > Game.NumberOfCells - 1 ||
+                                                 position.Y < 0 || position.Y > Game.NumberOfCells - 1;
 
-        private bool IsPeg(Point position) => !OutOfMap(position) && GameBoard[position.X, position.Y] == CellState.peg;
+        private bool IsPeg(Point position) => !OutOfMap(position) && Game.Board[position.X, position.Y] == Game.CellState.peg;
 
         private List<Point> FindNeighbors(Point position)
         {
@@ -206,8 +162,6 @@ namespace PegSolitaire
         {
             int x = location.X - (sizePB.X - sizePB.Y) / 2;
             int y = location.Y;
-
-            Console.WriteLine(x.ToString() + " " + y.ToString());
 
             if (x <= 0 || x >= SizeOfDisplay)
                 return false;
