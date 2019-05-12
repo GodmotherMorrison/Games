@@ -28,7 +28,7 @@ namespace PegSolitaire
 
         public int SizeOfDisplay { get; set; }
 
-        public Bitmap Display { get; set; }
+        public Image Display { get; set; }
 
         private List<Point> VariantsOfMove { get; set; }
         private Point selectedPeg { get; set; }
