@@ -33,41 +33,32 @@ namespace PegSolitaire
         private List<Point> VariantsOfMove { get; set; }
         private Point selectedPeg { get; set; }
 
-
         public void DrawBoard()
         {
-            using (var graphics = Graphics.FromImage(this.Display))
+            RestoreDisplay();
+
+            for (int i = 0; i < Game.NumberOfCells; i++)
             {
-                for (int i = 0; i < Game.NumberOfCells; i++)
+                for (int j = 0; j < Game.NumberOfCells; j++)
                 {
-                    for (int j = 0; j < Game.NumberOfCells; j++)
-                    {
-                        switch (Game.Board[i, j])
-                        {
-                            case Game.CellState.peg:
-                                DrawPeg(graphics, Color.Red, i, j);
-                                break;
-                            case Game.CellState.hole:
-                                DrawHole(graphics, i, j);
-                                break;
-                        }
-                    }
+                    if (Game.Board[i, j] is Peg)
+                        DrawBoardObject(Images.peg, i, j);
+
+                    else if (Game.Board[i, j] is Hole)
+                        DrawBoardObject(Images.hole, i, j);
+
                 }
             }
         }
 
-        private void DrawHole(Graphics g, int i, int j)
-        {
-            var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
+        private void RestoreDisplay() => this.Display = new Bitmap(this.GetSize(), this.GetSize());
 
-            g.FillEllipse(new SolidBrush(Color.White), cell);
-            g.DrawEllipse(Pens.Red, cell);
-        }
 
-        private void DrawPeg(Graphics g, Color color, int i, int j)
+        private void DrawBoardObject(Image img, int i, int j)
         {
+            var g = Graphics.FromImage(this.Display);
             var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
-            g.FillEllipse(new SolidBrush(color), cell);
+            g.DrawImage(img, cell);
         }
 
         public void UpdateBoard(Point location, Point sizePB)
@@ -75,14 +66,20 @@ namespace PegSolitaire
             if (!TryGetLocationOnBoard(ref location, sizePB))
                 return;
 
-            var index = ConverterToIndex(location);
+            //position on the gameborad
+            var position = ConvertToPosition(location);
 
-            foreach (Point varinat in VariantsOfMove)
-                if (varinat.X == index.X && varinat.Y == index.Y)
-                { 
-                    Game.Board[selectedPeg.X, selectedPeg.Y] = Game.CellState.hole;
-                    Game.Board[varinat.X, varinat.Y] = Game.CellState.peg;
-                    Game.Board[(selectedPeg.X + varinat.X) / 2, (selectedPeg.Y + varinat.Y) / 2] = Game.CellState.hole;
+            foreach (Point variant in VariantsOfMove)
+                if (variant.Equals(position))
+                {
+                    Game.Board[selectedPeg.X, selectedPeg.Y] = new Hole()
+                    { position = new Point(selectedPeg.X, selectedPeg.Y) };
+
+                    Game.Board[variant.X, variant.Y] = new Peg()
+                    { position = new Point(variant.X, variant.Y) };
+
+                    Game.Board[(selectedPeg.X + variant.X) / 2, (selectedPeg.Y + variant.Y) / 2] = new Hole()
+                    { position = new Point((selectedPeg.X + variant.X) / 2, (selectedPeg.Y + variant.Y) / 2) };
 
                     DrawBoard();
                     VariantsOfMove.Clear();
@@ -92,11 +89,11 @@ namespace PegSolitaire
             //restore
             DrawBoard();
 
-            if (IsPeg(index))
-                GetVariantsOfMove(index);
+            if (IsPeg(position))
+                GetVariantsOfMove(position);
         }
 
-        private Point ConverterToIndex(Point location)
+        private Point ConvertToPosition(Point location)
         {
             location.X = location.X / (SizeOfDisplay / Game.NumberOfCells);
             location.Y = location.Y / (SizeOfDisplay / Game.NumberOfCells);
@@ -106,7 +103,6 @@ namespace PegSolitaire
 
         private void GetVariantsOfMove(Point position)
         {
-            var g = Graphics.FromImage(this.Display);
 
             VariantsOfMove.Clear();
             var neighbors = FindNeighbors(position);
@@ -120,10 +116,10 @@ namespace PegSolitaire
 
                 try
                 {
-                    if (Game.Board[i, j] == Game.CellState.hole)
+                    if (Game.Board[i, j] is Hole)
                     {
-                        DrawPeg(g, Color.Orange, i, j);
-                        DrawPeg(g, Color.DarkRed, position.X, position.Y);
+                        DrawBoardObject(Images.selectedHole, i, j);
+                        DrawBoardObject(Images.selectedPeg, position.X, position.Y);
 
                         VariantsOfMove.Add(new Point(i, j));
                     }
@@ -142,7 +138,7 @@ namespace PegSolitaire
         private bool OutOfMap(Point position) => position.X < 0 || position.X > Game.NumberOfCells - 1 ||
                                                  position.Y < 0 || position.Y > Game.NumberOfCells - 1;
 
-        private bool IsPeg(Point position) => !OutOfMap(position) && Game.Board[position.X, position.Y] == Game.CellState.peg;
+        private bool IsPeg(Point position) => !OutOfMap(position) && Game.Board[position.X, position.Y] is Peg;
 
         private List<Point> FindNeighbors(Point position)
         {

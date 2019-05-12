@@ -59,12 +59,12 @@ namespace PegSolitaire
     0    ";
 
         public enum CellState { notExit, hole, peg };
-        public static CellState[,] Board;
+        public static IBoardObject[,] Board;
         public static int NumberOfCells => Board.GetLength(0);
 
         public static void CreateBoard()
         {
-            Board = BoardCreator.CreateBoard(diamond);
+            Board = BoardCreator.CreateBoard(standart);
         }
     }
 }
