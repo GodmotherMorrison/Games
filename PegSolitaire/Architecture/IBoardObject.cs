@@ -4,6 +4,6 @@ namespace PegSolitaire
 {
     public interface IBoardObject
     {
-        Point position { get; set; }
+        position position { get; set; }
     }
 }

@@ -15,10 +15,7 @@ namespace PegSolitaire
             this.game = new GameLogic(pictureBox1.Height);
             game.DrawBoard();
             pictureBox1.Image = game.Display;
-
         }
-
-        //private void pictureBox1_Paint(object sender, PaintEventArgs e) => pictureBox1.Image = game.Display;
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -28,8 +25,5 @@ namespace PegSolitaire
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e) => game.SizeOfDisplay = pictureBox1.Height;
 
-        private void Form1_Activated(object sender, EventArgs e)
-        {
-        }
     }
 }

@@ -60,7 +60,6 @@ namespace PegSolitaire
             this.Name = "Form1";
             this.Text = "Peg Solitaire";
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            //this.Activated += new System.EventHandler(this.Form1_Activated);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

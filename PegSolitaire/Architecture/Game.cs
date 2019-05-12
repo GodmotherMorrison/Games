@@ -64,7 +64,7 @@ namespace PegSolitaire
 
         public static void CreateBoard()
         {
-            Board = BoardCreator.CreateBoard(standart);
+            Board = BoardCreator.CreateBoard(european);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace PegSolitaire
         {
             this.SizeOfDisplay = size;
             this.Display = new Bitmap(this.GetSize(), this.GetSize());
-            VariantsOfMove = new List<Point>();
+            VariantsOfMove = new List<position>();
         }
 
         public int GetSize()
@@ -30,8 +30,8 @@ namespace PegSolitaire
 
         public Image Display { get; set; }
 
-        private List<Point> VariantsOfMove { get; set; }
-        private Point selectedPeg { get; set; }
+        private List<position> VariantsOfMove { get; set; }
+        private position selectedPeg { get; set; }
 
         public void DrawBoard()
         {
@@ -56,9 +56,11 @@ namespace PegSolitaire
 
         private void DrawBoardObject(Image img, int i, int j)
         {
-            var g = Graphics.FromImage(this.Display);
-            var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
-            g.DrawImage(img, cell);
+            using (var g = Graphics.FromImage(this.Display))
+            {
+                var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
+                g.DrawImage(img, cell);
+            }
         }
 
         public void UpdateBoard(Point location, Point sizePB)
@@ -69,17 +71,17 @@ namespace PegSolitaire
             //position on the gameborad
             var position = ConvertToPosition(location);
 
-            foreach (Point variant in VariantsOfMove)
+            foreach (position variant in VariantsOfMove)
                 if (variant.Equals(position))
                 {
-                    Game.Board[selectedPeg.X, selectedPeg.Y] = new Hole()
-                    { position = new Point(selectedPeg.X, selectedPeg.Y) };
+                    Game.Board[selectedPeg.i, selectedPeg.j] = new Hole()
+                    { position = new position(selectedPeg.i, selectedPeg.j) };
 
-                    Game.Board[variant.X, variant.Y] = new Peg()
-                    { position = new Point(variant.X, variant.Y) };
+                    Game.Board[variant.i, variant.j] = new Peg()
+                    { position = new position(variant.i, variant.j) };
 
-                    Game.Board[(selectedPeg.X + variant.X) / 2, (selectedPeg.Y + variant.Y) / 2] = new Hole()
-                    { position = new Point((selectedPeg.X + variant.X) / 2, (selectedPeg.Y + variant.Y) / 2) };
+                    Game.Board[(selectedPeg.i + variant.i) / 2, (selectedPeg.j + variant.j) / 2] = new Hole()
+                    { position = new position((selectedPeg.i + variant.i) / 2, (selectedPeg.j + variant.j) / 2) };
 
                     DrawBoard();
                     VariantsOfMove.Clear();
@@ -93,35 +95,35 @@ namespace PegSolitaire
                 GetVariantsOfMove(position);
         }
 
-        private Point ConvertToPosition(Point location)
+        private position ConvertToPosition(Point location)
         {
             location.X = location.X / (SizeOfDisplay / Game.NumberOfCells);
             location.Y = location.Y / (SizeOfDisplay / Game.NumberOfCells);
 
-            return new Point(location.Y, location.X);
+            return new position(location.Y, location.X);
         }
 
-        private void GetVariantsOfMove(Point position)
+        private void GetVariantsOfMove(position position)
         {
 
             VariantsOfMove.Clear();
             var neighbors = FindNeighbors(position);
 
-            selectedPeg = new Point(position.X, position.Y);
+            selectedPeg = new position(position.i, position.j);
 
             foreach (var neighbour in neighbors)
             {
-                int i = 2 * neighbour.X - position.X;
-                int j = 2 * neighbour.Y - position.Y;
+                int i = 2 * neighbour.i - position.i;
+                int j = 2 * neighbour.j - position.j;
 
                 try
                 {
                     if (Game.Board[i, j] is Hole)
                     {
                         DrawBoardObject(Images.selectedHole, i, j);
-                        DrawBoardObject(Images.selectedPeg, position.X, position.Y);
+                        DrawBoardObject(Images.selectedPeg, position.i, position.j);
 
-                        VariantsOfMove.Add(new Point(i, j));
+                        VariantsOfMove.Add(new position(i, j));
                     }
 
                 }
@@ -129,27 +131,27 @@ namespace PegSolitaire
             }
         }
 
-        private void AddNeighbors(Point position, ref List<Point> neighbors)
+        private void AddNeighbors(position pos, ref List<position> neighbors)
         {
-            if (IsPeg(position))
-                neighbors.Add(new Point(position.X, position.Y));
+            if (IsPeg(pos))
+                neighbors.Add(new position(pos.i, pos.j));
         }
 
-        private bool OutOfMap(Point position) => position.X < 0 || position.X > Game.NumberOfCells - 1 ||
-                                                 position.Y < 0 || position.Y > Game.NumberOfCells - 1;
+        private bool OutOfMap(position pos) => pos.i < 0 || pos.i > Game.NumberOfCells - 1 ||
+                                                 pos.j < 0 || pos.j > Game.NumberOfCells - 1;
 
-        private bool IsPeg(Point position) => !OutOfMap(position) && Game.Board[position.X, position.Y] is Peg;
+        private bool IsPeg(position pos) => !OutOfMap(pos) && Game.Board[pos.i, pos.j] is Peg;
 
-        private List<Point> FindNeighbors(Point position)
+        private List<position> FindNeighbors(position pos)
         {
-            List<Point> neighbors = new List<Point>();
+            var neighbors = new List<position>();
 
-            selectedPeg = new Point(position.X, position.Y);
+            selectedPeg = new position(pos.i, pos.j);
 
-            AddNeighbors(new Point(position.X - 1, position.Y), ref neighbors);
-            AddNeighbors(new Point(position.X + 1, position.Y), ref neighbors);
-            AddNeighbors(new Point(position.X, position.Y - 1), ref neighbors);
-            AddNeighbors(new Point(position.X, position.Y + 1), ref neighbors);
+            AddNeighbors(new position(pos.i - 1, pos.j), ref neighbors);
+            AddNeighbors(new position(pos.i + 1, pos.j), ref neighbors);
+            AddNeighbors(new position(pos.i, pos.j - 1), ref neighbors);
+            AddNeighbors(new position(pos.i, pos.j + 1), ref neighbors);
 
             return neighbors;
         }

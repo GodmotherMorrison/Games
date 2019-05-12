@@ -65,6 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
+    <Compile Include="PositionOnBoard.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Architecture\Form1.resx">
