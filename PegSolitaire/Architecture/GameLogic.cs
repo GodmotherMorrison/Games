@@ -63,14 +63,22 @@ namespace PegSolitaire
             if (!TryGetLocationOnBoard(ref location, sizePB))
                 return;
 
-            //position on the gameborad
+            //position on the gameboard
             var position = ConvertToPosition(location);
 
-
             DrawBoard();
-            foreach (var variant in from variant in VariantsOfMove
-                                    where variant.position.Equals(position)
-                                    select variant)
+
+            if (Game.Board[position.i, position.j] is Peg)
+                SelectNewPeg(position);
+
+            CheckVariantsOfMove(position);
+        }
+
+        private void CheckVariantsOfMove(position pos)
+        {
+            foreach (Hole variant in from variant in VariantsOfMove
+                                     where variant.position.Equals(pos)
+                                     select variant)
             {
                 Game.Board[selectedPeg.position.i, selectedPeg.position.j] = new Hole(selectedPeg.position);
                 Game.Board[variant.position.i, variant.position.j] = new Peg(variant.position);
@@ -81,16 +89,16 @@ namespace PegSolitaire
                 VariantsOfMove.Clear();
                 return;
             }
+        }
 
-            if (Game.Board[position.i, position.j] is Peg)
-            {
-                selectedPeg = (Peg)Game.Board[position.i, position.j];
-                DrawBoardObject(Images.selectedPeg, position.i, position.j);
+        private void SelectNewPeg(position pos)
+        {
+            selectedPeg = (Peg)Game.Board[pos.i, pos.j];
+            DrawBoardObject(Images.selectedPeg, pos.i, pos.j);
 
-                VariantsOfMove = selectedPeg.GetVariantsOfMove();
-                foreach (var variant in VariantsOfMove)
-                    DrawBoardObject(Images.selectedHole, variant.position.i, variant.position.j);
-            }
+            VariantsOfMove = selectedPeg.GetVariantsOfMove();
+            foreach (var variant in VariantsOfMove)
+                DrawBoardObject(Images.selectedHole, variant.position.i, variant.position.j);
         }
 
         private position ConvertToPosition(Point location)
