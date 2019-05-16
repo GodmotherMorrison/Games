@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace PegSolitaire
 {
 
     class GameLogic
     {
+        public int SizeOfDisplay { get; set; }
+        public Image Display { get; set; }
+
+
+        private List<Hole> VariantsOfMove { get; set; }
+        private Peg selectedPeg { get; set; }
+
+
         public GameLogic(int size)
         {
             this.SizeOfDisplay = size;
             this.Display = new Bitmap(this.GetSize(), this.GetSize());
-            VariantsOfMove = new List<position>();
+            VariantsOfMove = new List<Hole>();
         }
+
 
         public int GetSize()
         {
@@ -21,22 +31,10 @@ namespace PegSolitaire
                     ? Screen.PrimaryScreen.Bounds.Height : Screen.PrimaryScreen.Bounds.Width;
         }
 
-        private int GetSizeOfCell()
-        {
-            return GetSize() / Game.NumberOfCells;
-        }
-
-        public int SizeOfDisplay { get; set; }
-
-        public Image Display { get; set; }
-
-        private List<position> VariantsOfMove { get; set; }
-        private position selectedPeg { get; set; }
+        private int GetSizeOfCell() => GetSize() / Game.NumberOfCells;
 
         public void DrawBoard()
         {
-            RestoreDisplay();
-
             for (int i = 0; i < Game.NumberOfCells; i++)
             {
                 for (int j = 0; j < Game.NumberOfCells; j++)
@@ -50,9 +48,6 @@ namespace PegSolitaire
                 }
             }
         }
-
-        private void RestoreDisplay() => this.Display = new Bitmap(this.GetSize(), this.GetSize());
-
 
         private void DrawBoardObject(Image img, int i, int j)
         {
@@ -71,28 +66,31 @@ namespace PegSolitaire
             //position on the gameborad
             var position = ConvertToPosition(location);
 
-            foreach (position variant in VariantsOfMove)
-                if (variant.Equals(position))
-                {
-                    Game.Board[selectedPeg.i, selectedPeg.j] = new Hole()
-                    { position = new position(selectedPeg.i, selectedPeg.j) };
 
-                    Game.Board[variant.i, variant.j] = new Peg()
-                    { position = new position(variant.i, variant.j) };
-
-                    Game.Board[(selectedPeg.i + variant.i) / 2, (selectedPeg.j + variant.j) / 2] = new Hole()
-                    { position = new position((selectedPeg.i + variant.i) / 2, (selectedPeg.j + variant.j) / 2) };
-
-                    DrawBoard();
-                    VariantsOfMove.Clear();
-                    return;
-                }
-
-            //restore
             DrawBoard();
+            foreach (var variant in from variant in VariantsOfMove
+                                    where variant.position.Equals(position)
+                                    select variant)
+            {
+                Game.Board[selectedPeg.position.i, selectedPeg.position.j] = new Hole(selectedPeg.position);
+                Game.Board[variant.position.i, variant.position.j] = new Peg(variant.position);
+                Game.Board[(selectedPeg.position.i + variant.position.i) / 2, (selectedPeg.position.j + variant.position.j) / 2]
+                    = new Hole((selectedPeg.position.i + variant.position.i) / 2, (selectedPeg.position.j + variant.position.j) / 2);
 
-            if (IsPeg(position))
-                GetVariantsOfMove(position);
+                DrawBoard();
+                VariantsOfMove.Clear();
+                return;
+            }
+
+            if (Game.Board[position.i, position.j] is Peg)
+            {
+                selectedPeg = (Peg)Game.Board[position.i, position.j];
+                DrawBoardObject(Images.selectedPeg, position.i, position.j);
+
+                VariantsOfMove = selectedPeg.GetVariantsOfMove();
+                foreach (var variant in VariantsOfMove)
+                    DrawBoardObject(Images.selectedHole, variant.position.i, variant.position.j);
+            }
         }
 
         private position ConvertToPosition(Point location)
@@ -103,65 +101,22 @@ namespace PegSolitaire
             return new position(location.Y, location.X);
         }
 
-        private void GetVariantsOfMove(position position)
-        {
-
-            VariantsOfMove.Clear();
-            var neighbors = FindNeighbors(position);
-
-            selectedPeg = new position(position.i, position.j);
-
-            foreach (var neighbour in neighbors)
-            {
-                int i = 2 * neighbour.i - position.i;
-                int j = 2 * neighbour.j - position.j;
-
-                try
-                {
-                    if (Game.Board[i, j] is Hole)
-                    {
-                        DrawBoardObject(Images.selectedHole, i, j);
-                        DrawBoardObject(Images.selectedPeg, position.i, position.j);
-
-                        VariantsOfMove.Add(new position(i, j));
-                    }
-
-                }
-                catch (IndexOutOfRangeException) { }
-            }
-        }
-
-        private void AddNeighbors(position pos, ref List<position> neighbors)
-        {
-            if (IsPeg(pos))
-                neighbors.Add(new position(pos.i, pos.j));
-        }
-
-        private bool OutOfMap(position pos) => pos.i < 0 || pos.i > Game.NumberOfCells - 1 ||
-                                                 pos.j < 0 || pos.j > Game.NumberOfCells - 1;
-
-        private bool IsPeg(position pos) => !OutOfMap(pos) && Game.Board[pos.i, pos.j] is Peg;
-
-        private List<position> FindNeighbors(position pos)
-        {
-            var neighbors = new List<position>();
-
-            selectedPeg = new position(pos.i, pos.j);
-
-            AddNeighbors(new position(pos.i - 1, pos.j), ref neighbors);
-            AddNeighbors(new position(pos.i + 1, pos.j), ref neighbors);
-            AddNeighbors(new position(pos.i, pos.j - 1), ref neighbors);
-            AddNeighbors(new position(pos.i, pos.j + 1), ref neighbors);
-
-            return neighbors;
-        }
-
         private bool TryGetLocationOnBoard(ref Point location, Point sizePB)
         {
-            int x = location.X - (sizePB.X - sizePB.Y) / 2;
-            int y = location.Y;
+            int x, y;
+            if (sizePB.X > sizePB.Y)
+            {
+                x = location.X - (sizePB.X - sizePB.Y) / 2;
+                y = location.Y;
+            }
 
-            if (x <= 0 || x >= SizeOfDisplay)
+            else
+            {
+                x = location.X;
+                y = location.Y - (sizePB.Y - sizePB.X) / 2;
+            }
+
+            if (x <= 0 || x >= SizeOfDisplay || y <= 0 || y >= SizeOfDisplay)
                 return false;
 
             location = new Point(x, y);

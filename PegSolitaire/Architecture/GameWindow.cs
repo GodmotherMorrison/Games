@@ -4,9 +4,9 @@ using System.Windows.Forms;
 
 namespace PegSolitaire
 {
-    public partial class Form1 : Form
+    public partial class GameWindow : Form
     {
-        public Form1() => InitializeComponent();
+        public GameWindow() => InitializeComponent();
 
         private void Form1_Shown(object sender, EventArgs e)
         {
@@ -23,7 +23,9 @@ namespace PegSolitaire
             pictureBox1.Image = game.Display;
         }
 
-        private void pictureBox1_SizeChanged(object sender, EventArgs e) => game.SizeOfDisplay = pictureBox1.Height;
+        private void pictureBox1_SizeChanged(object sender, EventArgs e)
+            => game.SizeOfDisplay =
+            (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
 
     }
 }
