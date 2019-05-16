@@ -26,6 +26,15 @@ namespace PegSolitaire
   ###  
   ###  ";
 
+        private const string gameIsWin = @"
+  ###  
+  ###  
+#######
+#00####
+#######
+  ###  
+  ###  ";
+
         private const string european = @"
   000  
  00000 
@@ -67,13 +76,44 @@ namespace PegSolitaire
    000   
     0    ";
 
-        public enum CellState { notExit, hole, peg };
         public static IBoardObject[,] Board;
+        public static position WinPoint;
+
         public static int NumberOfCells => Board.GetLength(0);
 
         public static void CreateBoard()
         {
             Board = BoardCreator.CreateBoard(standart);
+        }
+
+        public static bool IsOver()
+        {
+            for (int i = 0; i < Game.NumberOfCells; i++)
+            {
+                for (int j = 0; j < Game.NumberOfCells; j++)
+                {
+                    if (Game.Board[i, j] is Peg && ((Peg)Game.Board[i, j]).GetVariantsOfMove().Count != 0)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool IsWin()
+        {
+            List<Peg> Pegs = new List<Peg>();
+
+            for (int i = 0; i < Game.NumberOfCells; i++)
+            {
+                for (int j = 0; j < Game.NumberOfCells; j++)
+                {
+                    if (Game.Board[i, j] is Peg)
+                        Pegs.Add(new Peg(i, j));
+                }
+            }
+
+            return (Pegs.Count == 1 && Pegs[0].position.Equals(WinPoint));
         }
     }
 }

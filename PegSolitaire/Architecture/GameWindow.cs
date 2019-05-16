@@ -21,16 +21,22 @@ namespace PegSolitaire
         {
             game.UpdateBoard(e.Location, (Point)pictureBox1.Size);
             pictureBox1.Image = game.Display;
-            if (game.IsOver())
+
+            if (Game.IsOver())
             {
-                MessageBox.Show("(╯°□°）╯︵ ┻━┻", "Game is over!");
+                if (Game.IsWin())
+                    MessageBox.Show("(ﾉ´ヮ`)ﾉ*: ･ﾟ", "You win!");
+
+                else
+                    MessageBox.Show("(╯°□°）╯︵ ┻━┻", "Game is over!");
+
                 this.Close();
+
             }
         }
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
             => game.SizeOfDisplay =
             (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
-
     }
 }

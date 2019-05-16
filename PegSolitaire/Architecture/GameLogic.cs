@@ -44,7 +44,6 @@ namespace PegSolitaire
 
                     else if (Game.Board[i, j] is Hole)
                         DrawBoardObject(Images.hole, i, j);
-
                 }
             }
         }
@@ -75,19 +74,6 @@ namespace PegSolitaire
             CheckVariantsOfMove(position);
         }
 
-        public bool IsOver()
-        {
-            for (int i = 0; i < Game.NumberOfCells; i++)
-            {
-                for (int j = 0; j < Game.NumberOfCells; j++)
-                {
-                    if (Game.Board[i, j] is Peg && ((Peg)Game.Board[i, j]).GetVariantsOfMove().Count != 0)
-                        return false;
-                }
-            }
-
-            return true;
-        }
 
         private void CheckVariantsOfMove(position pos)
         {

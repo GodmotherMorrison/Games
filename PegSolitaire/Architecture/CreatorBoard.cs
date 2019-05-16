@@ -23,10 +23,13 @@ namespace PegSolitaire
             {
                 case ' ':
                     return null;
-                case '0':
+                case '0': 
                     return new Peg(i, j);
                 case '#':
-                    return new Hole(i, j);
+                    {
+                        Game.WinPoint = new position(i, j);
+                        return new Hole(i, j);
+                    }
                 default:
                     throw new Exception($"wrong symbol {c}");
             }
