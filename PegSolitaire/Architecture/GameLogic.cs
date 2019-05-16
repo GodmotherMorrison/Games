@@ -53,6 +53,7 @@ namespace PegSolitaire
         {
             using (var g = Graphics.FromImage(this.Display))
             {
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
                 var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
                 g.DrawImage(img, cell);
             }
@@ -74,7 +75,7 @@ namespace PegSolitaire
             CheckVariantsOfMove(position);
         }
 
-        public bool IsGameOver()
+        public bool IsOver()
         {
             for (int i = 0; i < Game.NumberOfCells; i++)
             {
