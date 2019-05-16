@@ -17,6 +17,15 @@ namespace PegSolitaire
   000  
   000  ";
 
+        private const string gameIsOver = @"
+  000  
+  ###  
+0######
+0######
+#######
+  ###  
+  ###  ";
+
         private const string european = @"
   000  
  00000 

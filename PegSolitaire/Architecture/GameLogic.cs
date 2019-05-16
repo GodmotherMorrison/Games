@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
+using System.Drawing.Drawing2D;
 
 namespace PegSolitaire
 {
@@ -72,6 +72,20 @@ namespace PegSolitaire
                 SelectNewPeg(position);
 
             CheckVariantsOfMove(position);
+        }
+
+        public bool IsGameOver()
+        {
+            for (int i = 0; i < Game.NumberOfCells; i++)
+            {
+                for (int j = 0; j < Game.NumberOfCells; j++)
+                {
+                    if (Game.Board[i, j] is Peg && ((Peg)Game.Board[i, j]).GetVariantsOfMove().Count != 0)
+                        return false;
+                }
+            }
+
+            return true;
         }
 
         private void CheckVariantsOfMove(position pos)

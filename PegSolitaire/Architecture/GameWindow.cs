@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace PegSolitaire
@@ -21,6 +22,18 @@ namespace PegSolitaire
         {
             game.UpdateBoard(e.Location, (Point)pictureBox1.Size);
             pictureBox1.Image = game.Display;
+
+            if (game.IsGameOver())
+            {
+                MessageBox.Show("(╯°□°）╯︵ ┻━┻", "Game is over!");
+                this.Close();
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs paintEventArgs)
+        {
+            paintEventArgs.Graphics.InterpolationMode = InterpolationMode.Low;
+            base.OnPaint(paintEventArgs);
         }
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
