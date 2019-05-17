@@ -42,10 +42,10 @@ namespace PegSolitaire
                 for (int j = 0; j < Game.NumberOfCells; j++)
                 {
                     if (Game.Board[i, j] is Peg)
-                        DrawBoardObject(Images.peg, i, j);
+                        DrawBoardObject("peg", i, j);
 
                     else if (Game.Board[i, j] is Hole)
-                        DrawBoardObject(Images.hole, i, j);
+                        DrawBoardObject("hole", i, j);
 
                 }
             }
@@ -54,12 +54,27 @@ namespace PegSolitaire
         private void RestoreDisplay() => this.Display = new Bitmap(this.GetSize(), this.GetSize());
 
 
-        private void DrawBoardObject(Image img, int i, int j)
+        private void DrawBoardObject(string boardObject, int i, int j)
         {
+            var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
+
             using (var g = Graphics.FromImage(this.Display))
             {
-                var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
-                g.DrawImage(img, cell);
+                switch (boardObject)
+                {
+                    case "peg":
+                        g.DrawImage(Images.peg, cell);
+                        break;
+                    case "hole":
+                        g.DrawImage(Images.hole, cell);
+                        break;
+                    case "selectedPeg":
+                        g.DrawImage(Images.selectedPeg, cell);
+                        break;
+                    case "selectedHole":
+                        g.DrawImage(Images.selectedHole, cell);
+                        break;
+                }
             }
         }
 
@@ -120,8 +135,8 @@ namespace PegSolitaire
                 {
                     if (Game.Board[i, j] is Hole)
                     {
-                        DrawBoardObject(Images.selectedHole, i, j);
-                        DrawBoardObject(Images.selectedPeg, position.i, position.j);
+                        DrawBoardObject("selectedHole", i, j);
+                        DrawBoardObject("selectedPeg", position.i, position.j);
 
                         VariantsOfMove.Add(new position(i, j));
                     }
