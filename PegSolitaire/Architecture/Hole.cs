@@ -6,7 +6,6 @@
         {
         }
 
-
         public Hole(Position pos)
         {
             Position = pos;
