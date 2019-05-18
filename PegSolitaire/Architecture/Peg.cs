@@ -4,6 +4,10 @@ namespace PegSolitaire.Architecture
 {
     internal class Peg : IBoardObject
     {
+        public Peg()
+        {
+        }
+
         public Peg(Position pos)
         {
             Position = pos;

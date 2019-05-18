@@ -61,36 +61,6 @@ namespace PegSolitaire {
         }
         
         /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
-        /// </summary>
-        internal static System.Drawing.Icon _128 {
-            get {
-                object obj = ResourceManager.GetObject("_128", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
-        /// </summary>
-        internal static System.Drawing.Icon _32 {
-            get {
-                object obj = ResourceManager.GetObject("_32", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
-        /// </summary>
-        internal static System.Drawing.Icon _64 {
-            get {
-                object obj = ResourceManager.GetObject("_64", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap hole {

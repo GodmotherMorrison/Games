@@ -2,6 +2,11 @@
 {
     internal class Hole : IBoardObject
     {
+        public Hole()
+        {
+        }
+
+
         public Hole(Position pos)
         {
             Position = pos;

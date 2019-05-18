@@ -10,32 +10,28 @@ namespace PegSolitaire.Architecture
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            Game.CreateBoard();
-
-            game = new GameLogic(pictureBox1.Height);
-            game.DrawBoard();
-            pictureBox1.Image = game.Display;
+            Game.CreateBoard(pictureBox1.Height);
+            pictureBox1.Image = Game.GetDrawnBoard();
         }
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            game.UpdateBoard(e.Location, (Point)pictureBox1.Size);
-            pictureBox1.Image = game.Display;
+            Game.UpdateBoard(e.Location, (Point)pictureBox1.Size);
+            pictureBox1.Image = Game.Display;
 
             if (!Game.IsOver()) return;
 
             if (Game.IsWin())
-                MessageBox.Show("(ﾉ´ヮ`)ﾉ*: ･ﾟ", "You win!");
-
+                MessageBox.Show(@"(ﾉ´ヮ`)ﾉ･ﾟ", @"You won!");
             else
-                MessageBox.Show("(╯°□°）╯︵ ┻━┻", "Game is over!");
+                MessageBox.Show(@"(╯°□°）╯︵ ┻━┻", @"Game over!");
 
             Close();
         }
 
-        private void pictureBox1_SizeChanged(object sender, EventArgs e)
+        private void PictureBox1_SizeChanged(object sender, EventArgs e)
         {
-            game.SizeOfDisplay = (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
+            Game.SizeOfDisplay = (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
         }
     }
 }

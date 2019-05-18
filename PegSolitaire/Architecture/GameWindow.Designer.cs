@@ -45,8 +45,8 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
-            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
+            this.pictureBox1.SizeChanged += new System.EventHandler(this.PictureBox1_SizeChanged);
+            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseClick);
             // 
             // GameWindow
             // 
@@ -67,7 +67,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private GameLogic game;
     }
 }
 
