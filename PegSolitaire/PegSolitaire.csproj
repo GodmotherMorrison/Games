@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="Architecture\CreatorBoard.cs" />
     <Compile Include="Architecture\Hole.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="Architecture\Game.cs" />
     <Compile Include="Architecture\GameLogic.cs" />
     <Compile Include="Architecture\GameWindow.cs">
       <SubType>Form</SubType>
@@ -69,7 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <Compile Include="Architecture\PositionOnBoard.cs" />
+    <Compile Include="Architecture\Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Architecture\GameWindow.resx">

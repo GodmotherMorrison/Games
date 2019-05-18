@@ -12,7 +12,7 @@ namespace PegSolitaire.Architecture
         {
             Game.CreateBoard();
 
-            this.game = new GameLogic(pictureBox1.Height);
+            game = new GameLogic(pictureBox1.Height);
             game.DrawBoard();
             pictureBox1.Image = game.Display;
         }
@@ -22,21 +22,20 @@ namespace PegSolitaire.Architecture
             game.UpdateBoard(e.Location, (Point)pictureBox1.Size);
             pictureBox1.Image = game.Display;
 
-            if (Game.IsOver())
-            {
-                if (Game.IsWin())
-                    MessageBox.Show("(ﾉ´ヮ`)ﾉ*: ･ﾟ", "You win!");
+            if (!Game.IsOver()) return;
 
-                else
-                    MessageBox.Show("(╯°□°）╯︵ ┻━┻", "Game is over!");
+            if (Game.IsWin())
+                MessageBox.Show("(ﾉ´ヮ`)ﾉ*: ･ﾟ", "You win!");
 
-                this.Close();
+            else
+                MessageBox.Show("(╯°□°）╯︵ ┻━┻", "Game is over!");
 
-            }
+            Close();
         }
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
-            => game.SizeOfDisplay =
-            (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
+        {
+            game.SizeOfDisplay = (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
+        }
     }
 }

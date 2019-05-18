@@ -6,15 +6,14 @@ using System.Windows.Forms;
 
 namespace PegSolitaire.Architecture
 {
-
-    class GameLogic
+    internal class GameLogic
     {
         public int SizeOfDisplay { get; set; }
         public Image Display { get; set; }
 
 
         private List<Hole> VariantsOfMove { get; set; }
-        private Peg selectedPeg { get; set; }
+        private Peg SelectedPeg { get; set; }
 
 
         public GameLogic(int size)
@@ -35,15 +34,19 @@ namespace PegSolitaire.Architecture
 
         public void DrawBoard()
         {
-            for (int i = 0; i < Game.NumberOfCells; i++)
+            for (var i = 0; i < Game.NumberOfCells; i++)
             {
-                for (int j = 0; j < Game.NumberOfCells; j++)
+                for (var j = 0; j < Game.NumberOfCells; j++)
                 {
-                    if (Game.Board[i, j] is Peg)
-                        DrawBoardObject(Images.peg, i, j);
-
-                    else if (Game.Board[i, j] is Hole)
-                        DrawBoardObject(Images.hole, i, j);
+                    switch (Game.Board[i, j])
+                    {
+                        case Peg _:
+                            DrawBoardObject(Images.peg, i, j);
+                            break;
+                        case Hole _:
+                            DrawBoardObject(Images.hole, i, j);
+                            break;
+                    }
                 }
             }
         }
@@ -77,14 +80,14 @@ namespace PegSolitaire.Architecture
 
         private void CheckVariantsOfMove(Position pos)
         {
-            foreach (Hole variant in from variant in VariantsOfMove
+            foreach (var variant in from variant in VariantsOfMove
                                      where variant.Position.Equals(pos)
                                      select variant)
             {
-                Game.Board[selectedPeg.Position.I, selectedPeg.Position.J] = new Hole(selectedPeg.Position);
+                Game.Board[SelectedPeg.Position.I, SelectedPeg.Position.J] = new Hole(SelectedPeg.Position);
                 Game.Board[variant.Position.I, variant.Position.J] = new Peg(variant.Position);
-                Game.Board[(selectedPeg.Position.I + variant.Position.I) / 2, (selectedPeg.Position.J + variant.Position.J) / 2]
-                    = new Hole((selectedPeg.Position.I + variant.Position.I) / 2, (selectedPeg.Position.J + variant.Position.J) / 2);
+                Game.Board[(SelectedPeg.Position.I + variant.Position.I) / 2, (SelectedPeg.Position.J + variant.Position.J) / 2]
+                    = new Hole((SelectedPeg.Position.I + variant.Position.I) / 2, (SelectedPeg.Position.J + variant.Position.J) / 2);
 
                 DrawBoard();
                 VariantsOfMove.Clear();
@@ -94,18 +97,18 @@ namespace PegSolitaire.Architecture
 
         private void SelectNewPeg(Position pos)
         {
-            selectedPeg = (Peg)Game.Board[pos.I, pos.J];
+            SelectedPeg = (Peg)Game.Board[pos.I, pos.J];
             DrawBoardObject(Images.selectedPeg, pos.I, pos.J);
 
-            VariantsOfMove = selectedPeg.GetVariantsOfMove();
+            VariantsOfMove = SelectedPeg.GetVariantsOfMove();
             foreach (var variant in VariantsOfMove)
                 DrawBoardObject(Images.selectedHole, variant.Position.I, variant.Position.J);
         }
 
         private Position ConvertToPosition(Point location)
         {
-            location.X = location.X / (SizeOfDisplay / Game.NumberOfCells);
-            location.Y = location.Y / (SizeOfDisplay / Game.NumberOfCells);
+            location.X /= (SizeOfDisplay / Game.NumberOfCells);
+            location.Y /= (SizeOfDisplay / Game.NumberOfCells);
 
             return new Position(location.Y, location.X);
         }

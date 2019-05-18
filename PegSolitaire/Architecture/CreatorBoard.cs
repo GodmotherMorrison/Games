@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace PegSolitaire.Architecture
 {
-    class BoardCreator
+    internal class BoardCreator
     {
         public static IBoardObject[,] CreateBoard(string board, string separator = "\r\n")
         {
@@ -34,5 +34,75 @@ namespace PegSolitaire.Architecture
                     throw new Exception($"wrong symbol {c}");
             }
         }
+
+        public const string GameIsOver = @"
+  000  
+  ###  
+0######
+0######
+#######
+  ###  
+  ###  ";
+
+        public const string GameIsWin = @"
+  ###  
+  ###  
+#######
+#00####
+#######
+  ###  
+  ###  ";
+
+
+        public const string Standard = @"
+  000  
+  000  
+0000000
+000#000
+0000000
+  000  
+  000  ";
+
+        public const string European = @"
+  000  
+ 00000 
+000#000
+0000000
+0000000
+ 00000 
+  000  ";
+
+        public const string Wiegleb = @"
+   000   
+   000   
+   000   
+000000000
+0000#0000
+000000000
+   000   
+   000   
+   000   ";
+
+        public const string Asymmetrical = @"
+  000   
+  000   
+  000   
+00000000
+000#0000
+00000000
+  000   
+  000   ";
+
+        public const string Diamond = @"
+    0    
+   000   
+  00000  
+ 0000000 
+0000#0000
+ 0000000 
+  00000  
+   000   
+    0    ";
+
     }
 }
