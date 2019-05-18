@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PegSolitaire.Architecture;
 
 namespace PegSolitaire
 {
@@ -77,7 +78,7 @@ namespace PegSolitaire
     0    ";
 
         public static IBoardObject[,] Board;
-        public static position WinPoint;
+        public static Position WinPoint;
 
         public static int NumberOfCells => Board.GetLength(0);
 
@@ -113,7 +114,7 @@ namespace PegSolitaire
                 }
             }
 
-            return (Pegs.Count == 1 && Pegs[0].position.Equals(WinPoint));
+            return (Pegs.Count == 1 && Pegs[0].Position.Equals(WinPoint));
         }
     }
 }

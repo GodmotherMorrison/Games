@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Linq;
 using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Windows.Forms;
 
-namespace PegSolitaire
+namespace PegSolitaire.Architecture
 {
 
     class GameLogic
@@ -68,23 +68,23 @@ namespace PegSolitaire
 
             DrawBoard();
 
-            if (Game.Board[position.i, position.j] is Peg)
+            if (Game.Board[position.I, position.J] is Peg)
                 SelectNewPeg(position);
 
             CheckVariantsOfMove(position);
         }
 
 
-        private void CheckVariantsOfMove(position pos)
+        private void CheckVariantsOfMove(Position pos)
         {
             foreach (Hole variant in from variant in VariantsOfMove
-                                     where variant.position.Equals(pos)
+                                     where variant.Position.Equals(pos)
                                      select variant)
             {
-                Game.Board[selectedPeg.position.i, selectedPeg.position.j] = new Hole(selectedPeg.position);
-                Game.Board[variant.position.i, variant.position.j] = new Peg(variant.position);
-                Game.Board[(selectedPeg.position.i + variant.position.i) / 2, (selectedPeg.position.j + variant.position.j) / 2]
-                    = new Hole((selectedPeg.position.i + variant.position.i) / 2, (selectedPeg.position.j + variant.position.j) / 2);
+                Game.Board[selectedPeg.Position.I, selectedPeg.Position.J] = new Hole(selectedPeg.Position);
+                Game.Board[variant.Position.I, variant.Position.J] = new Peg(variant.Position);
+                Game.Board[(selectedPeg.Position.I + variant.Position.I) / 2, (selectedPeg.Position.J + variant.Position.J) / 2]
+                    = new Hole((selectedPeg.Position.I + variant.Position.I) / 2, (selectedPeg.Position.J + variant.Position.J) / 2);
 
                 DrawBoard();
                 VariantsOfMove.Clear();
@@ -92,22 +92,22 @@ namespace PegSolitaire
             }
         }
 
-        private void SelectNewPeg(position pos)
+        private void SelectNewPeg(Position pos)
         {
-            selectedPeg = (Peg)Game.Board[pos.i, pos.j];
-            DrawBoardObject(Images.selectedPeg, pos.i, pos.j);
+            selectedPeg = (Peg)Game.Board[pos.I, pos.J];
+            DrawBoardObject(Images.selectedPeg, pos.I, pos.J);
 
             VariantsOfMove = selectedPeg.GetVariantsOfMove();
             foreach (var variant in VariantsOfMove)
-                DrawBoardObject(Images.selectedHole, variant.position.i, variant.position.j);
+                DrawBoardObject(Images.selectedHole, variant.Position.I, variant.Position.J);
         }
 
-        private position ConvertToPosition(Point location)
+        private Position ConvertToPosition(Point location)
         {
             location.X = location.X / (SizeOfDisplay / Game.NumberOfCells);
             location.Y = location.Y / (SizeOfDisplay / Game.NumberOfCells);
 
-            return new position(location.Y, location.X);
+            return new Position(location.Y, location.X);
         }
 
         private bool TryGetLocationOnBoard(ref Point location, Point sizePB)

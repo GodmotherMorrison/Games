@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace PegSolitaire
+namespace PegSolitaire.Architecture
 {
     class BoardCreator
     {
@@ -27,7 +27,7 @@ namespace PegSolitaire
                     return new Peg(i, j);
                 case '#':
                     {
-                        Game.WinPoint = new position(i, j);
+                        Game.WinPoint = new Position(i, j);
                         return new Hole(i, j);
                     }
                 default:

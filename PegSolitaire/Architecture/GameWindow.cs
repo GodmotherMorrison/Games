@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace PegSolitaire
+namespace PegSolitaire.Architecture
 {
     public partial class GameWindow : Form
     {

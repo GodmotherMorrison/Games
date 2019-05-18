@@ -1,9 +1,7 @@
-﻿using System.Drawing;
-
-namespace PegSolitaire
+﻿namespace PegSolitaire.Architecture
 {
     public interface IBoardObject
     {
-        position position { get; set; }
+        Position Position { get; set; }
     }
 }

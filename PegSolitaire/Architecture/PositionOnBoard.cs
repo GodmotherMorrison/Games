@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PegSolitaire
+﻿namespace PegSolitaire.Architecture
 {
-    public struct position
+    public struct Position
     {
-        public int i;
-        public int j;
+        public int I;
+        public int J;
 
-        public position(int i, int j)
+        public Position(int i, int j)
         {
-            this.i = i;
-            this.j = j;
+            I = i;
+            J = j;
         }
     }
 }

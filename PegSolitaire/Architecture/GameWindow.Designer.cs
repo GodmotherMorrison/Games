@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace PegSolitaire
+﻿namespace PegSolitaire.Architecture
 {
     partial class GameWindow
     {
