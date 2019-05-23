@@ -63,6 +63,9 @@
     </Compile>
     <Compile Include="Architecture\Peg.cs" />
     <Compile Include="Architecture\IBoardObject.cs" />
+    <Compile Include="Architecture\PictureBoxWithInterpolationMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Images.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -115,6 +118,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="32.ico" />
+    <None Include="Images\NewGame.png" />
+    <None Include="Images\SelectField.png" />
+    <None Include="Images\Play.png" />
+    <None Include="Images\Exit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

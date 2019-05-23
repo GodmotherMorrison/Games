@@ -10,7 +10,9 @@ namespace PegSolitaire.Architecture
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            Game.CreateBoard(pictureBox1.Height);
+            ShowMenu();
+            Game.SetSizeOfDisplay(pictureBox1.Height);
+            Game.CreateBoard(BoardCreator.Standard);
             pictureBox1.Image = Game.GetDrawnBoard();
         }
 
@@ -26,12 +28,62 @@ namespace PegSolitaire.Architecture
             else
                 MessageBox.Show(@"(╯°□°）╯︵ ┻━┻", @"Game over!");
 
-            Close();
+            ShowMenu();
         }
 
         private void PictureBox1_SizeChanged(object sender, EventArgs e)
         {
             Game.SizeOfDisplay = (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
+        }
+
+        private bool _isShowMenu;
+
+        private static void HideControl(Control c, bool state)
+        {
+            c.Enabled = state;
+            c.Visible = state;
+        }
+
+        public void ShowMenu()
+        {
+            HideControl(pictureBox1, false);
+            HideControl(panelMenu, true);
+
+            _isShowMenu = !_isShowMenu;
+        }
+
+        public void HideMenu()
+        {
+            HideControl(pictureBox1, true);
+            HideControl(panelMenu, false);
+
+            _isShowMenu = !_isShowMenu;
+        }
+
+        private void GameWindow_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != (char) Keys.Escape) return;
+            if (_isShowMenu)
+                HideMenu();
+            else
+                ShowMenu();
+        }
+
+        private void PictureBoxPlay_Click(object sender, EventArgs e)
+        {
+            HideMenu();
+        }
+
+        private void PictureBoxExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void PictureBoxNewGame_Click(object sender, EventArgs e)
+        {
+            Game.CreateBoard(BoardCreator.Standard);
+            pictureBox1.Image = Game.GetDrawnBoard();
+            HideMenu();
         }
     }
 }

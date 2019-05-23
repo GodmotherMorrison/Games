@@ -17,12 +17,16 @@ namespace PegSolitaire.Architecture
 
         public static int NumberOfCells => Board.GetLength(0);
 
-        public static void CreateBoard(int size)
+        public static void CreateBoard(string board)
         {
-            Board = BoardCreator.CreateBoard(BoardCreator.Standard);
+            Board = BoardCreator.CreateBoard(board);
+            _variantsOfMove = new List<Hole>();
+        }
+
+        public static void SetSizeOfDisplay(int size)
+        {
             SizeOfDisplay = size;
             Display = new Bitmap(GetSize(), GetSize());
-            _variantsOfMove = new List<Hole>();
         }
 
         public static int GetSize() => Screen.PrimaryScreen.Bounds.Height < Screen.PrimaryScreen.Bounds.Width ?
@@ -130,7 +134,7 @@ namespace PegSolitaire.Architecture
             ClearSelection();
 
             if (!(Board[pos.I, pos.J] is Peg))
-                return;
+                return;  
 
             _selectedPeg = (Peg)Board[pos.I, pos.J];
             _variantsOfMove = _selectedPeg.GetVariantsOfMove();
