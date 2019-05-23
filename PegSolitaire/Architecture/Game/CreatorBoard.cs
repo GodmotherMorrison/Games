@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace PegSolitaire.Architecture
+namespace PegSolitaire.Architecture.Game
 {
     internal class BoardCreator
     {

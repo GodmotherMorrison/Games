@@ -52,28 +52,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Architecture\CreatorBoard.cs" />
-    <Compile Include="Architecture\Hole.cs" />
-    <Compile Include="Architecture\Game.cs" />
+    <Compile Include="Architecture\Controls\MButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Architecture\Controls\MButton.Designer.cs">
+      <DependentUpon>MButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Architecture\Controls\PictureBoxWithInterpolationMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Architecture\Game\CreatorBoard.cs" />
+    <Compile Include="Architecture\Game\Hole.cs" />
+    <Compile Include="Architecture\Game\Game.cs" />
     <Compile Include="Architecture\GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Architecture\GameWindow.Designer.cs">
       <DependentUpon>GameWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Architecture\Peg.cs" />
-    <Compile Include="Architecture\IBoardObject.cs" />
-    <Compile Include="Architecture\PictureBoxWithInterpolationMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Architecture\Game\Peg.cs" />
+    <Compile Include="Architecture\Game\IBoardObject.cs" />
     <Compile Include="Images.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <Compile Include="Architecture\Position.cs" />
+    <Compile Include="Architecture\Game\Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Architecture\Controls\MButton.resx">
+      <DependentUpon>MButton.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Architecture\GameWindow.resx">
       <DependentUpon>GameWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -123,6 +132,7 @@
     <None Include="Images\Play.png" />
     <None Include="Images\Exit.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

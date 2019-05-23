@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PegSolitaire.Architecture
+namespace PegSolitaire.Architecture.Game
 {
     internal class Peg : IBoardObject
     {

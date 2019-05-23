@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using PegSolitaire.Architecture.Game;
 
 namespace PegSolitaire.Architecture
 {
@@ -11,19 +12,19 @@ namespace PegSolitaire.Architecture
         private void Form1_Shown(object sender, EventArgs e)
         {
             ShowMenu();
-            Game.SetSizeOfDisplay(pictureBox1.Height);
-            Game.CreateBoard(BoardCreator.Standard);
-            pictureBox1.Image = Game.GetDrawnBoard();
+            Game.Game.SetSizeOfDisplay(pictureBox1.Height);
+            Game.Game.CreateBoard(BoardCreator.Standard);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
         }
 
         private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            Game.UpdateBoard(e.Location, (Point)pictureBox1.Size);
-            pictureBox1.Image = Game.Display;
+            Game.Game.UpdateBoard(e.Location, (Point)pictureBox1.Size);
+            pictureBox1.Image = Game.Game.Display;
 
-            if (!Game.IsOver()) return;
+            if (!Game.Game.IsOver()) return;
 
-            if (Game.IsWin())
+            if (Game.Game.IsWin())
                 MessageBox.Show(@"(ﾉ´ヮ`)ﾉ･ﾟ", @"You won!");
             else
                 MessageBox.Show(@"(╯°□°）╯︵ ┻━┻", @"Game over!");
@@ -33,7 +34,7 @@ namespace PegSolitaire.Architecture
 
         private void PictureBox1_SizeChanged(object sender, EventArgs e)
         {
-            Game.SizeOfDisplay = (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
+            Game.Game.SizeOfDisplay = (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
         }
 
         private bool _isShowMenu;
@@ -81,8 +82,8 @@ namespace PegSolitaire.Architecture
 
         private void PictureBoxNewGame_Click(object sender, EventArgs e)
         {
-            Game.CreateBoard(BoardCreator.Standard);
-            pictureBox1.Image = Game.GetDrawnBoard();
+            Game.Game.CreateBoard(BoardCreator.Standard);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
             HideMenu();
         }
 

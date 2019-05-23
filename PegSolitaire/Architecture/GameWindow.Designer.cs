@@ -1,4 +1,6 @@
-﻿namespace PegSolitaire.Architecture
+﻿using PegSolitaire.Architecture.Controls;
+
+namespace PegSolitaire.Architecture
 {
     partial class GameWindow
     {
@@ -32,10 +34,10 @@
             this.panelMenu = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBoxPlay = new PegSolitaire.Architecture.PictureBoxWithInterpolationMode();
-            this.pictureBoxNewGame = new PegSolitaire.Architecture.PictureBoxWithInterpolationMode();
-            this.pictureBoxSelectField = new PegSolitaire.Architecture.PictureBoxWithInterpolationMode();
-            this.pictureBoxExit = new PegSolitaire.Architecture.PictureBoxWithInterpolationMode();
+            this.pictureBoxPlay = new PegSolitaire.Architecture.Controls.PictureBoxWithInterpolationMode();
+            this.pictureBoxNewGame = new PegSolitaire.Architecture.Controls.PictureBoxWithInterpolationMode();
+            this.pictureBoxSelectField = new PegSolitaire.Architecture.Controls.PictureBoxWithInterpolationMode();
+            this.pictureBoxExit = new PegSolitaire.Architecture.Controls.PictureBoxWithInterpolationMode();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panelMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -64,16 +66,15 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.75F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.5F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.75F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 230F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(260, 230);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -87,7 +88,7 @@
             this.tableLayoutPanel2.Controls.Add(this.pictureBoxSelectField, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.pictureBoxExit, 0, 4);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(51, 3);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(55, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 6;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -96,7 +97,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(156, 224);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(150, 224);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // pictureBoxPlay
@@ -108,7 +109,7 @@
             this.pictureBoxPlay.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
             this.pictureBoxPlay.Location = new System.Drawing.Point(3, 47);
             this.pictureBoxPlay.Name = "pictureBoxPlay";
-            this.pictureBoxPlay.Size = new System.Drawing.Size(150, 27);
+            this.pictureBoxPlay.Size = new System.Drawing.Size(144, 27);
             this.pictureBoxPlay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxPlay.TabIndex = 0;
             this.pictureBoxPlay.TabStop = false;
@@ -124,7 +125,7 @@
             this.pictureBoxNewGame.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
             this.pictureBoxNewGame.Location = new System.Drawing.Point(3, 80);
             this.pictureBoxNewGame.Name = "pictureBoxNewGame";
-            this.pictureBoxNewGame.Size = new System.Drawing.Size(150, 27);
+            this.pictureBoxNewGame.Size = new System.Drawing.Size(144, 27);
             this.pictureBoxNewGame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxNewGame.TabIndex = 1;
             this.pictureBoxNewGame.TabStop = false;
@@ -140,7 +141,7 @@
             this.pictureBoxSelectField.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
             this.pictureBoxSelectField.Location = new System.Drawing.Point(3, 113);
             this.pictureBoxSelectField.Name = "pictureBoxSelectField";
-            this.pictureBoxSelectField.Size = new System.Drawing.Size(150, 27);
+            this.pictureBoxSelectField.Size = new System.Drawing.Size(144, 27);
             this.pictureBoxSelectField.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxSelectField.TabIndex = 2;
             this.pictureBoxSelectField.TabStop = false;
@@ -155,7 +156,7 @@
             this.pictureBoxExit.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
             this.pictureBoxExit.Location = new System.Drawing.Point(3, 146);
             this.pictureBoxExit.Name = "pictureBoxExit";
-            this.pictureBoxExit.Size = new System.Drawing.Size(150, 27);
+            this.pictureBoxExit.Size = new System.Drawing.Size(144, 27);
             this.pictureBoxExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxExit.TabIndex = 3;
             this.pictureBoxExit.TabStop = false;
@@ -210,6 +211,7 @@
         private System.Windows.Forms.Panel panelMenu;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+
         private PictureBoxWithInterpolationMode pictureBoxPlay;
         private PictureBoxWithInterpolationMode pictureBoxNewGame;
         private PictureBoxWithInterpolationMode pictureBoxSelectField;

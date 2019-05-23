@@ -1,7 +1,7 @@
 ﻿using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace PegSolitaire.Architecture
+namespace PegSolitaire.Architecture.Controls
 {
     public class PictureBoxWithInterpolationMode : PictureBox
     {

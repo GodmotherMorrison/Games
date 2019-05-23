@@ -1,4 +1,4 @@
-﻿namespace PegSolitaire.Architecture
+﻿namespace PegSolitaire.Architecture.Game
 {
     internal class Hole : IBoardObject
     {
