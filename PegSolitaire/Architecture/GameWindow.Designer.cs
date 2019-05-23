@@ -113,6 +113,8 @@
             this.pictureBoxPlay.TabIndex = 0;
             this.pictureBoxPlay.TabStop = false;
             this.pictureBoxPlay.Click += new System.EventHandler(this.PictureBoxPlay_Click);
+            this.pictureBoxPlay.MouseEnter += new System.EventHandler(this.PictureBox_MouseEnter);
+            this.pictureBoxPlay.MouseLeave += new System.EventHandler(this.PictureBox_MouseLeave);
             // 
             // pictureBoxNewGame
             // 
@@ -127,6 +129,8 @@
             this.pictureBoxNewGame.TabIndex = 1;
             this.pictureBoxNewGame.TabStop = false;
             this.pictureBoxNewGame.Click += new System.EventHandler(this.PictureBoxNewGame_Click);
+            this.pictureBoxNewGame.MouseEnter += new System.EventHandler(this.PictureBox_MouseEnter);
+            this.pictureBoxNewGame.MouseLeave += new System.EventHandler(this.PictureBox_MouseLeave);
             // 
             // pictureBoxSelectField
             // 
@@ -140,6 +144,8 @@
             this.pictureBoxSelectField.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxSelectField.TabIndex = 2;
             this.pictureBoxSelectField.TabStop = false;
+            this.pictureBoxSelectField.MouseEnter += new System.EventHandler(this.PictureBox_MouseEnter);
+            this.pictureBoxSelectField.MouseLeave += new System.EventHandler(this.PictureBox_MouseLeave);
             // 
             // pictureBoxExit
             // 
@@ -154,6 +160,8 @@
             this.pictureBoxExit.TabIndex = 3;
             this.pictureBoxExit.TabStop = false;
             this.pictureBoxExit.Click += new System.EventHandler(this.PictureBoxExit_Click);
+            this.pictureBoxExit.MouseEnter += new System.EventHandler(this.PictureBox_MouseEnter);
+            this.pictureBoxExit.MouseLeave += new System.EventHandler(this.PictureBox_MouseLeave);
             // 
             // pictureBox1
             // 

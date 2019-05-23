@@ -85,5 +85,15 @@ namespace PegSolitaire.Architecture
             pictureBox1.Image = Game.GetDrawnBoard();
             HideMenu();
         }
+
+        private void PictureBox_MouseEnter(object sender, EventArgs e)
+        {
+            ((Control)sender).BackColor = Color.Maroon;
+        }
+
+        private void PictureBox_MouseLeave(object sender, EventArgs e)
+        {
+            ((Control)sender).BackColor = Color.Transparent;
+        }
     }
 }
