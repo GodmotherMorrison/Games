@@ -101,9 +101,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\backround.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Images\hole.png" />
   </ItemGroup>
   <ItemGroup>
