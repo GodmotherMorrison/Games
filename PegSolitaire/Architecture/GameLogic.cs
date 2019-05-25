@@ -1,19 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
+using System.Drawing.Drawing2D;
 
 namespace PegSolitaire
 {
 
     class GameLogic
     {
+        public int SizeOfDisplay { get; set; }
+        public Image Display { get; set; }
+
+
+        private List<Hole> VariantsOfMove { get; set; }
+        private Peg selectedPeg { get; set; }
+
+
         public GameLogic(int size)
         {
             this.SizeOfDisplay = size;
             this.Display = new Bitmap(this.GetSize(), this.GetSize());
-            VariantsOfMove = new List<Point>();
+            VariantsOfMove = new List<Hole>();
         }
+
 
         public int GetSize()
         {
@@ -21,53 +31,31 @@ namespace PegSolitaire
                     ? Screen.PrimaryScreen.Bounds.Height : Screen.PrimaryScreen.Bounds.Width;
         }
 
-        private int GetSizeOfCell()
-        {
-            return GetSize() / Game.NumberOfCells;
-        }
-
-        public int SizeOfDisplay { get; set; }
-
-        public Bitmap Display { get; set; }
-
-        private List<Point> VariantsOfMove { get; set; }
-        private Point selectedPeg { get; set; }
-
+        private int GetSizeOfCell() => GetSize() / Game.NumberOfCells;
 
         public void DrawBoard()
         {
-            using (var graphics = Graphics.FromImage(this.Display))
+            for (int i = 0; i < Game.NumberOfCells; i++)
             {
-                for (int i = 0; i < Game.NumberOfCells; i++)
+                for (int j = 0; j < Game.NumberOfCells; j++)
                 {
-                    for (int j = 0; j < Game.NumberOfCells; j++)
-                    {
-                        switch (Game.Board[i, j])
-                        {
-                            case Game.CellState.peg:
-                                DrawPeg(graphics, Color.Red, i, j);
-                                break;
-                            case Game.CellState.hole:
-                                DrawHole(graphics, i, j);
-                                break;
-                        }
-                    }
+                    if (Game.Board[i, j] is Peg)
+                        DrawBoardObject(Images.peg, i, j);
+
+                    else if (Game.Board[i, j] is Hole)
+                        DrawBoardObject(Images.hole, i, j);
                 }
             }
         }
 
-        private void DrawHole(Graphics g, int i, int j)
+        private void DrawBoardObject(Image img, int i, int j)
         {
-            var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
-
-            g.FillEllipse(new SolidBrush(Color.White), cell);
-            g.DrawEllipse(Pens.Red, cell);
-        }
-
-        private void DrawPeg(Graphics g, Color color, int i, int j)
-        {
-            var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
-            g.FillEllipse(new SolidBrush(color), cell);
+            using (var g = Graphics.FromImage(this.Display))
+            {
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                var cell = new Rectangle(j * GetSizeOfCell(), i * GetSizeOfCell(), GetSizeOfCell(), GetSizeOfCell());
+                g.DrawImage(img, cell);
+            }
         }
 
         public void UpdateBoard(Point location, Point sizePB)
@@ -75,95 +63,69 @@ namespace PegSolitaire
             if (!TryGetLocationOnBoard(ref location, sizePB))
                 return;
 
-            var index = ConverterToIndex(location);
+            //position on the gameboard
+            var position = ConvertToPosition(location);
 
-            foreach (Point varinat in VariantsOfMove)
-                if (varinat.X == index.X && varinat.Y == index.Y)
-                { 
-                    Game.Board[selectedPeg.X, selectedPeg.Y] = Game.CellState.hole;
-                    Game.Board[varinat.X, varinat.Y] = Game.CellState.peg;
-                    Game.Board[(selectedPeg.X + varinat.X) / 2, (selectedPeg.Y + varinat.Y) / 2] = Game.CellState.hole;
-
-                    DrawBoard();
-                    VariantsOfMove.Clear();
-                    return;
-                }
-
-            //restore
             DrawBoard();
 
-            if (IsPeg(index))
-                GetVariantsOfMove(index);
+            if (Game.Board[position.i, position.j] is Peg)
+                SelectNewPeg(position);
+
+            CheckVariantsOfMove(position);
         }
 
-        private Point ConverterToIndex(Point location)
+
+        private void CheckVariantsOfMove(position pos)
+        {
+            foreach (Hole variant in from variant in VariantsOfMove
+                                     where variant.position.Equals(pos)
+                                     select variant)
+            {
+                Game.Board[selectedPeg.position.i, selectedPeg.position.j] = new Hole(selectedPeg.position);
+                Game.Board[variant.position.i, variant.position.j] = new Peg(variant.position);
+                Game.Board[(selectedPeg.position.i + variant.position.i) / 2, (selectedPeg.position.j + variant.position.j) / 2]
+                    = new Hole((selectedPeg.position.i + variant.position.i) / 2, (selectedPeg.position.j + variant.position.j) / 2);
+
+                DrawBoard();
+                VariantsOfMove.Clear();
+                return;
+            }
+        }
+
+        private void SelectNewPeg(position pos)
+        {
+            selectedPeg = (Peg)Game.Board[pos.i, pos.j];
+            DrawBoardObject(Images.selectedPeg, pos.i, pos.j);
+
+            VariantsOfMove = selectedPeg.GetVariantsOfMove();
+            foreach (var variant in VariantsOfMove)
+                DrawBoardObject(Images.selectedHole, variant.position.i, variant.position.j);
+        }
+
+        private position ConvertToPosition(Point location)
         {
             location.X = location.X / (SizeOfDisplay / Game.NumberOfCells);
             location.Y = location.Y / (SizeOfDisplay / Game.NumberOfCells);
 
-            return new Point(location.Y, location.X);
-        }
-
-        private void GetVariantsOfMove(Point position)
-        {
-            var g = Graphics.FromImage(this.Display);
-
-            VariantsOfMove.Clear();
-            var neighbors = FindNeighbors(position);
-
-            selectedPeg = new Point(position.X, position.Y);
-
-            foreach (var neighbour in neighbors)
-            {
-                int i = 2 * neighbour.X - position.X;
-                int j = 2 * neighbour.Y - position.Y;
-
-                try
-                {
-                    if (Game.Board[i, j] == Game.CellState.hole)
-                    {
-                        DrawPeg(g, Color.Orange, i, j);
-                        DrawPeg(g, Color.DarkRed, position.X, position.Y);
-
-                        VariantsOfMove.Add(new Point(i, j));
-                    }
-
-                }
-                catch (IndexOutOfRangeException) { }
-            }
-        }
-
-        private void AddNeighbors(Point position, ref List<Point> neighbors)
-        {
-            if (IsPeg(position))
-                neighbors.Add(new Point(position.X, position.Y));
-        }
-
-        private bool OutOfMap(Point position) => position.X < 0 || position.X > Game.NumberOfCells - 1 ||
-                                                 position.Y < 0 || position.Y > Game.NumberOfCells - 1;
-
-        private bool IsPeg(Point position) => !OutOfMap(position) && Game.Board[position.X, position.Y] == Game.CellState.peg;
-
-        private List<Point> FindNeighbors(Point position)
-        {
-            List<Point> neighbors = new List<Point>();
-
-            selectedPeg = new Point(position.X, position.Y);
-
-            AddNeighbors(new Point(position.X - 1, position.Y), ref neighbors);
-            AddNeighbors(new Point(position.X + 1, position.Y), ref neighbors);
-            AddNeighbors(new Point(position.X, position.Y - 1), ref neighbors);
-            AddNeighbors(new Point(position.X, position.Y + 1), ref neighbors);
-
-            return neighbors;
+            return new position(location.Y, location.X);
         }
 
         private bool TryGetLocationOnBoard(ref Point location, Point sizePB)
         {
-            int x = location.X - (sizePB.X - sizePB.Y) / 2;
-            int y = location.Y;
+            int x, y;
+            if (sizePB.X > sizePB.Y)
+            {
+                x = location.X - (sizePB.X - sizePB.Y) / 2;
+                y = location.Y;
+            }
 
-            if (x <= 0 || x >= SizeOfDisplay)
+            else
+            {
+                x = location.X;
+                y = location.Y - (sizePB.Y - sizePB.X) / 2;
+            }
+
+            if (x <= 0 || x >= SizeOfDisplay || y <= 0 || y >= SizeOfDisplay)
                 return false;
 
             location = new Point(x, y);

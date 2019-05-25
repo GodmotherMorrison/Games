@@ -35,6 +35,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>32.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,18 +53,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Architecture\CreatorBoard.cs" />
-    <Compile Include="Architecture\Game.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Architecture\GameLogic.cs" />
-    <Compile Include="Architecture\Form1.cs">
+    <Compile Include="Architecture\GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Architecture\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Architecture\GameWindow.Designer.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Architecture\ObjectsOfBoard.cs" />
+    <Compile Include="Architecture\IBoardObject.cs" />
+    <Compile Include="Images.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Images.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Architecture\PositionOnBoard.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Architecture\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Architecture\GameWindow.resx">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -84,6 +99,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\hole.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\peg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\selectedHole.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\selectedPeg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\32.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\64.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\128.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="32.ico" />
+    <Content Include="Icons\16.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,28 +5,31 @@ namespace PegSolitaire
 {
     class BoardCreator
     {
-        public static Game.CellState[,] CreateBoard(string board, string separator = "\r\n")
+        public static IBoardObject[,] CreateBoard(string board, string separator = "\r\n")
         {
             var rows = board.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
             if (rows.Select(z => z.Length).Distinct().Count() != 1)
                 throw new Exception($"Wrong test map '{board}'");
-            var result = new Game.CellState[rows[0].Length, rows.Length];
+            var result = new IBoardObject[rows[0].Length, rows.Length];
             for (var x = 0; x < rows[0].Length; x++)
                 for (var y = 0; y < rows.Length; y++)
-                    result[x, y] = ParseBySymbol(rows[x][y]);
+                    result[x, y] = ParseBySymbol(rows[x][y], x, y);
             return result;
         }
 
-        private static Game.CellState ParseBySymbol(char c)
+        private static IBoardObject ParseBySymbol(char c, int i, int j)
         {
             switch (c)
             {
                 case ' ':
-                    return Game.CellState.notExit;
-                case '0':
-                    return Game.CellState.peg;
+                    return null;
+                case '0': 
+                    return new Peg(i, j);
                 case '#':
-                    return Game.CellState.hole;
+                    {
+                        Game.WinPoint = new position(i, j);
+                        return new Hole(i, j);
+                    }
                 default:
                     throw new Exception($"wrong symbol {c}");
             }
