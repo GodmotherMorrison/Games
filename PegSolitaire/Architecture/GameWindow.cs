@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using PegSolitaire.Architecture.Game;
@@ -8,6 +9,15 @@ namespace PegSolitaire.Architecture
     public partial class GameWindow : Form
     {
         public GameWindow() => InitializeComponent();
+
+        private Dictionary<string, Bitmap[]> MenuButtons =
+new Dictionary<string, Bitmap[]>
+{
+    {"pictureBoxPlay", new Bitmap[] {Images.Play, Images.Play1} },
+    {"pictureBoxNewGame", new Bitmap[] {Images.NewGame, Images.NewGame1 } },
+    {"pictureBoxSelectField", new Bitmap[] {Images.SelectField, Images.SelectField1} },
+    {"pictureBoxExit", new Bitmap[] {Images.Exit, Images.Exit1} },
+};
 
         private void Form1_Shown(object sender, EventArgs e)
         {
@@ -47,7 +57,7 @@ namespace PegSolitaire.Architecture
 
         public void ShowMenu()
         {
-            HideControl(pictureBox1, false);
+            HideControl(gamePanel, false);
             HideControl(panelMenu, true);
 
             _isShowMenu = !_isShowMenu;
@@ -55,7 +65,7 @@ namespace PegSolitaire.Architecture
 
         public void HideMenu()
         {
-            HideControl(pictureBox1, true);
+            HideControl(gamePanel, true);
             HideControl(panelMenu, false);
 
             _isShowMenu = !_isShowMenu;
@@ -89,12 +99,12 @@ namespace PegSolitaire.Architecture
 
         private void PictureBox_MouseEnter(object sender, EventArgs e)
         {
-            ((Control)sender).BackColor = Color.Maroon;
+            ((PictureBox)sender).Image = MenuButtons[((PictureBox)sender).Name][1];
         }
 
         private void PictureBox_MouseLeave(object sender, EventArgs e)
         {
-            ((Control)sender).BackColor = Color.Transparent;
+            ((PictureBox)sender).Image = MenuButtons[((PictureBox)sender).Name][0];
         }
     }
 }

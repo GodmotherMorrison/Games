@@ -127,6 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="32.ico" />
+    <None Include="Images\Play1.png" />
+    <None Include="Images\Exit1.png" />
+    <None Include="Images\NewGame1.png" />
+    <Content Include="Images\PegSolitaire.png" />
+    <None Include="Images\SelectField1.png" />
+    <None Include="Resources\PegSolitaire.png" />
     <None Include="Images\NewGame.png" />
     <None Include="Images\SelectField.png" />
     <None Include="Images\Play.png" />
