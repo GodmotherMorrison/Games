@@ -21,7 +21,7 @@ new Dictionary<string, Bitmap[]>
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            ShowMenu();
+            ShowPanel(panelMenu);
             Game.Game.SetSizeOfDisplay(pictureBox1.Height);
             Game.Game.CreateBoard(BoardCreator.Standard);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
@@ -39,7 +39,7 @@ new Dictionary<string, Bitmap[]>
             else
                 MessageBox.Show(@"(╯°□°）╯︵ ┻━┻", @"Game over!");
 
-            ShowMenu();
+            ShowPanel(panelMenu);
         }
 
         private void PictureBox1_SizeChanged(object sender, EventArgs e)
@@ -47,7 +47,6 @@ new Dictionary<string, Bitmap[]>
             Game.Game.SizeOfDisplay = (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
         }
 
-        private bool _isShowMenu;
 
         private static void HideControl(Control c, bool state)
         {
@@ -55,34 +54,24 @@ new Dictionary<string, Bitmap[]>
             c.Visible = state;
         }
 
-        public void ShowMenu()
+        public void ShowPanel(Control control)
         {
-            HideControl(gamePanel, false);
-            HideControl(panelMenu, true);
-
-            _isShowMenu = !_isShowMenu;
-        }
-
-        public void HideMenu()
-        {
-            HideControl(gamePanel, true);
             HideControl(panelMenu, false);
+            HideControl(panelGame, false);
+            HideControl(panelBoards, false);
 
-            _isShowMenu = !_isShowMenu;
+            HideControl(control, true);
         }
 
         private void GameWindow_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar != (char) Keys.Escape) return;
-            if (_isShowMenu)
-                HideMenu();
-            else
-                ShowMenu();
+            ShowPanel(panelMenu);
         }
 
         private void PictureBoxPlay_Click(object sender, EventArgs e)
         {
-            HideMenu();
+            ShowPanel(panelGame);
         }
 
         private void PictureBoxExit_Click(object sender, EventArgs e)
@@ -92,9 +81,10 @@ new Dictionary<string, Bitmap[]>
 
         private void PictureBoxNewGame_Click(object sender, EventArgs e)
         {
+            pictureBox1.Image = null;
             Game.Game.CreateBoard(BoardCreator.Standard);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
-            HideMenu();
+            ShowPanel(panelGame);
         }
 
         private void PictureBox_MouseEnter(object sender, EventArgs e)
@@ -105,6 +95,46 @@ new Dictionary<string, Bitmap[]>
         private void PictureBox_MouseLeave(object sender, EventArgs e)
         {
             ((PictureBox)sender).Image = MenuButtons[((PictureBox)sender).Name][0];
+        }
+
+        private void PictureBoxSelectField_MouseClick(object sender, MouseEventArgs e)
+        {
+            ShowPanel(panelBoards);
+        }
+
+        private void PictureBoxStandart_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.Standard);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
+        }
+
+        private void PictureBoxEuropean_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.European);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
+        }
+
+        private void PictureBoxAsymmetrical_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.Asymmetrical);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
+        }
+
+        private void PictureBoxWiegleb_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.Wiegleb);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
+        }
+
+        private void PictureBoxDiamond_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.Diamond);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
         }
     }
 }
