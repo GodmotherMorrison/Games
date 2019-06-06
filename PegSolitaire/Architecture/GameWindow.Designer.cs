@@ -36,6 +36,7 @@ namespace PegSolitaire.Architecture
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBoxPlay = new PegSolitaire.Architecture.Controls.PictureBoxWithInterpolationMode();
             this.pictureBoxNewGame = new PegSolitaire.Architecture.Controls.PictureBoxWithInterpolationMode();
+            this.pictureBoxSelectField = new PegSolitaire.Architecture.Controls.PictureBoxWithInterpolationMode();
             this.pictureBoxExit = new PegSolitaire.Architecture.Controls.PictureBoxWithInterpolationMode();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panelMenu.SuspendLayout();
@@ -43,6 +44,7 @@ namespace PegSolitaire.Architecture
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNewGame)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelectField)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxExit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -80,19 +82,21 @@ namespace PegSolitaire.Architecture
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Controls.Add(this.pictureBoxPlay, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.pictureBoxNewGame, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.pictureBoxExit, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.pictureBoxSelectField, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.pictureBoxExit, 0, 4);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(55, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.52941F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.52941F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowCount = 6;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(150, 224);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
@@ -103,9 +107,9 @@ namespace PegSolitaire.Architecture
             this.pictureBoxPlay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBoxPlay.Image = global::PegSolitaire.Images.Play;
             this.pictureBoxPlay.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.pictureBoxPlay.Location = new System.Drawing.Point(3, 55);
+            this.pictureBoxPlay.Location = new System.Drawing.Point(3, 47);
             this.pictureBoxPlay.Name = "pictureBoxPlay";
-            this.pictureBoxPlay.Size = new System.Drawing.Size(144, 33);
+            this.pictureBoxPlay.Size = new System.Drawing.Size(144, 27);
             this.pictureBoxPlay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxPlay.TabIndex = 0;
             this.pictureBoxPlay.TabStop = false;
@@ -119,9 +123,9 @@ namespace PegSolitaire.Architecture
             this.pictureBoxNewGame.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBoxNewGame.Image = global::PegSolitaire.Images.NewGame;
             this.pictureBoxNewGame.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.pictureBoxNewGame.Location = new System.Drawing.Point(3, 94);
+            this.pictureBoxNewGame.Location = new System.Drawing.Point(3, 80);
             this.pictureBoxNewGame.Name = "pictureBoxNewGame";
-            this.pictureBoxNewGame.Size = new System.Drawing.Size(144, 33);
+            this.pictureBoxNewGame.Size = new System.Drawing.Size(144, 27);
             this.pictureBoxNewGame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxNewGame.TabIndex = 1;
             this.pictureBoxNewGame.TabStop = false;
@@ -129,15 +133,30 @@ namespace PegSolitaire.Architecture
             this.pictureBoxNewGame.MouseEnter += new System.EventHandler(this.PictureBox_MouseEnter);
             this.pictureBoxNewGame.MouseLeave += new System.EventHandler(this.PictureBox_MouseLeave);
             // 
+            // pictureBoxSelectField
+            // 
+            this.pictureBoxSelectField.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxSelectField.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxSelectField.Image = global::PegSolitaire.Images.SelectField;
+            this.pictureBoxSelectField.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+            this.pictureBoxSelectField.Location = new System.Drawing.Point(3, 113);
+            this.pictureBoxSelectField.Name = "pictureBoxSelectField";
+            this.pictureBoxSelectField.Size = new System.Drawing.Size(144, 27);
+            this.pictureBoxSelectField.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxSelectField.TabIndex = 2;
+            this.pictureBoxSelectField.TabStop = false;
+            this.pictureBoxSelectField.MouseEnter += new System.EventHandler(this.PictureBox_MouseEnter);
+            this.pictureBoxSelectField.MouseLeave += new System.EventHandler(this.PictureBox_MouseLeave);
+            // 
             // pictureBoxExit
             // 
             this.pictureBoxExit.BackColor = System.Drawing.Color.Transparent;
             this.pictureBoxExit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBoxExit.Image = global::PegSolitaire.Images.Exit;
             this.pictureBoxExit.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.pictureBoxExit.Location = new System.Drawing.Point(3, 133);
+            this.pictureBoxExit.Location = new System.Drawing.Point(3, 146);
             this.pictureBoxExit.Name = "pictureBoxExit";
-            this.pictureBoxExit.Size = new System.Drawing.Size(144, 33);
+            this.pictureBoxExit.Size = new System.Drawing.Size(144, 27);
             this.pictureBoxExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxExit.TabIndex = 3;
             this.pictureBoxExit.TabStop = false;
@@ -179,6 +198,7 @@ namespace PegSolitaire.Architecture
             this.tableLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNewGame)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelectField)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxExit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -194,6 +214,7 @@ namespace PegSolitaire.Architecture
 
         private PictureBoxWithInterpolationMode pictureBoxPlay;
         private PictureBoxWithInterpolationMode pictureBoxNewGame;
+        private PictureBoxWithInterpolationMode pictureBoxSelectField;
         private PictureBoxWithInterpolationMode pictureBoxExit;
     }
 }
