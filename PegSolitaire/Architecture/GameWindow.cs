@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using PegSolitaire.Architecture.Game;
@@ -9,9 +10,18 @@ namespace PegSolitaire.Architecture
     {
         public GameWindow() => InitializeComponent();
 
+        private Dictionary<string, Bitmap[]> MenuButtons =
+new Dictionary<string, Bitmap[]>
+{
+    {"pictureBoxPlay", new Bitmap[] {Images.Play, Images.Play1} },
+    {"pictureBoxNewGame", new Bitmap[] {Images.NewGame, Images.NewGame1 } },
+    {"pictureBoxSelectField", new Bitmap[] {Images.SelectField, Images.SelectField1} },
+    {"pictureBoxExit", new Bitmap[] {Images.Exit, Images.Exit1} },
+};
+
         private void Form1_Shown(object sender, EventArgs e)
         {
-            ShowMenu();
+            ShowPanel(panelMenu);
             Game.Game.SetSizeOfDisplay(pictureBox1.Height);
             Game.Game.CreateBoard(BoardCreator.Standard);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
@@ -29,7 +39,7 @@ namespace PegSolitaire.Architecture
             else
                 MessageBox.Show(@"(╯°□°）╯︵ ┻━┻", @"Game over!");
 
-            ShowMenu();
+            ShowPanel(panelMenu);
         }
 
         private void PictureBox1_SizeChanged(object sender, EventArgs e)
@@ -37,7 +47,6 @@ namespace PegSolitaire.Architecture
             Game.Game.SizeOfDisplay = (pictureBox1.Width > pictureBox1.Height) ? pictureBox1.Height : pictureBox1.Width;
         }
 
-        private bool _isShowMenu;
 
         private static void HideControl(Control c, bool state)
         {
@@ -45,34 +54,24 @@ namespace PegSolitaire.Architecture
             c.Visible = state;
         }
 
-        public void ShowMenu()
+        public void ShowPanel(Control control)
         {
-            HideControl(pictureBox1, false);
-            HideControl(panelMenu, true);
-
-            _isShowMenu = !_isShowMenu;
-        }
-
-        public void HideMenu()
-        {
-            HideControl(pictureBox1, true);
             HideControl(panelMenu, false);
+            HideControl(panelGame, false);
+            HideControl(panelBoards, false);
 
-            _isShowMenu = !_isShowMenu;
+            HideControl(control, true);
         }
 
         private void GameWindow_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar != (char) Keys.Escape) return;
-            if (_isShowMenu)
-                HideMenu();
-            else
-                ShowMenu();
+            ShowPanel(panelMenu);
         }
 
         private void PictureBoxPlay_Click(object sender, EventArgs e)
         {
-            HideMenu();
+            ShowPanel(panelGame);
         }
 
         private void PictureBoxExit_Click(object sender, EventArgs e)
@@ -82,19 +81,60 @@ namespace PegSolitaire.Architecture
 
         private void PictureBoxNewGame_Click(object sender, EventArgs e)
         {
+            pictureBox1.Image = null;
             Game.Game.CreateBoard(BoardCreator.Standard);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
-            HideMenu();
+            ShowPanel(panelGame);
         }
 
         private void PictureBox_MouseEnter(object sender, EventArgs e)
         {
-            ((Control)sender).BackColor = Color.Maroon;
+            ((PictureBox)sender).Image = MenuButtons[((PictureBox)sender).Name][1];
         }
 
         private void PictureBox_MouseLeave(object sender, EventArgs e)
         {
-            ((Control)sender).BackColor = Color.Transparent;
+            ((PictureBox)sender).Image = MenuButtons[((PictureBox)sender).Name][0];
+        }
+
+        private void PictureBoxSelectField_MouseClick(object sender, MouseEventArgs e)
+        {
+            ShowPanel(panelBoards);
+        }
+
+        private void PictureBoxStandart_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.Standard);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
+        }
+
+        private void PictureBoxEuropean_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.European);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
+        }
+
+        private void PictureBoxAsymmetrical_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.Asymmetrical);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
+        }
+
+        private void PictureBoxWiegleb_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.Wiegleb);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
+        }
+
+        private void PictureBoxDiamond_Click(object sender, EventArgs e)
+        {
+            Game.Game.CreateBoard(BoardCreator.Diamond);
+            pictureBox1.Image = Game.Game.GetDrawnBoard();
+            ShowPanel(panelGame);
         }
     }
 }
