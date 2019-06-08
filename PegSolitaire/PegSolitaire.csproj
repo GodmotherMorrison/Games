@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="32.ico" />
+    <None Include="Images\YouWon.png" />
     <None Include="Images\WieglebBoard1.png" />
     <None Include="Images\WieglebBoard.png" />
     <None Include="Images\StandartBoard1.png" />
@@ -142,6 +143,7 @@
     <None Include="Images\EuropeanBoard1.png" />
     <None Include="Images\Menu.png" />
     <None Include="Images\Menu1.png" />
+    <None Include="Images\GameOver.png" />
     <Content Include="Images\PegSolitaire.png" />
     <None Include="Images\SelectField1.png" />
     <None Include="Resources\PegSolitaire.png" />
