@@ -29,6 +29,16 @@ namespace PegSolitaire.Architecture.Game
             _variantsOfMove = new List<Hole>();
         }
 
+        public static void ClearBoard()
+        {
+            _selectedPeg = null;
+            _variantsOfMove = new List<Hole>();
+
+            var g = Graphics.FromImage(Display);
+            g.Clear(Color.Transparent);
+            g.Dispose();
+        }
+
         public static void SetSizeOfDisplay(int size)
         {
             SizeOfDisplay = size;
