@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using PegSolitaire.Architecture.Game;
@@ -15,6 +16,21 @@ namespace PegSolitaire.Architecture
             FormBorderStyle = FormBorderStyle.None;
             Bounds = Screen.PrimaryScreen.Bounds;
         }
+
+        private readonly Dictionary<string, Bitmap[]> _menuButtons =
+            new Dictionary<string, Bitmap[]>
+            {
+                {"pictureBoxPlay", new [] {Images.Play, Images.Play1} },
+                {"pictureBoxNewGame", new [] {Images.NewGame, Images.NewGame1 } },
+                {"pictureBoxSelectField", new [] {Images.SelectField, Images.SelectField1} },
+                {"pictureBoxExit", new [] {Images.Exit, Images.Exit1} },
+                {"buttonExit", new [] {Images.Menu, Images.Menu1} },
+                {"pictureBoxStandart", new [] {Images.StandartBoard, Images.StandartBoard1} },
+                {"pictureBoxEuropean", new [] {Images.EuropeanBoard, Images.EuropeanBoard1} },
+                {"pictureBoxWiegleb", new [] {Images.WieglebBoard, Images.WieglebBoard1} },
+                {"pictureBoxAsymmetrical", new [] {Images.AsymmetricalBoard, Images.AsymmetricalBoard1 } },
+                {"pictureBoxDiamond", new [] {Images.DiamondBoard, Images.DiamondBoard1} }
+            };
 
         private void Form1_Shown(object sender, EventArgs e)
         {

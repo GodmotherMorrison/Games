@@ -12,27 +12,17 @@ namespace PegSolitaire.Architecture
 {
     public partial class GameWindow : Form
     {
-        private void PictureBoxPlay_Click(object sender, EventArgs e)
-        {
-            ShowPanel(panelGame);
-        }
+        private void PictureBoxPlay_Click(object s, EventArgs e) => ShowPanel(panelGame);
 
-        private void PictureBoxNewGame_Click(object sender, EventArgs e)
+        private void PictureBoxNewGame_Click(object s, EventArgs e)
         {
             pictureBoxGameBoard.Image = null;
             Game.Game.CreateBoard(Game.Game.StringBoard);
             pictureBoxGameBoard.Image = Game.Game.GetDrawnBoard();
             ShowPanel(panelGame);
         }
-        private void PictureBoxSelectField_Click(object sender, EventArgs e)
-        {
-            ShowPanel(panelBoards);
-        }
+        private void PictureBoxSelectField_Click(object s, EventArgs e) => ShowPanel(panelBoards);
 
-        private void PictureBoxExit_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
+        private void PictureBoxExit_Click(object s, EventArgs e) => Close();
     }
 }

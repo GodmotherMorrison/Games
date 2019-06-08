@@ -16,11 +16,12 @@ namespace PegSolitaire.Architecture.Game
         private static List<Hole> _variantsOfMove;
         private static Peg _selectedPeg;
 
-
         public static int NumberOfCells => Board.GetLength(0);
 
         public static void CreateBoard(string board)
         {
+            StringBoard = board;
+
             var g = Graphics.FromImage(Display);
             g.Clear(Color.Transparent);
             g.Dispose();
