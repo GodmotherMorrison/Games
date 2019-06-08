@@ -98,6 +98,7 @@ namespace PegSolitaire.Architecture.Game
             if (!TryGetLocationOnBoard(ref location, displaySize))
                 return;
             var position = ConvertToPosition(location);
+            if (position.I >= NumberOfCells || position.J >= NumberOfCells) return;
 
             SelectNewPeg(position);
             CheckVariantsOfMove(position);
