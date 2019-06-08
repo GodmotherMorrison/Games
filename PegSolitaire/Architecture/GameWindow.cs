@@ -12,9 +12,9 @@ namespace PegSolitaire.Architecture
         {
             InitializeComponent();
 
-            //WindowState = FormWindowState.Maximized;
-            //FormBorderStyle = FormBorderStyle.None;
-            //Bounds = Screen.PrimaryScreen.Bounds;
+            WindowState = FormWindowState.Maximized;
+            FormBorderStyle = FormBorderStyle.None;
+            Bounds = Screen.PrimaryScreen.Bounds;
         }
 
         private Dictionary<string, Bitmap[]> MenuButtons =
@@ -29,6 +29,7 @@ new Dictionary<string, Bitmap[]>
     {"pictureBoxWiegleb", new Bitmap[] {Images.WieglebBoard, Images.WieglebBoard1} },
     {"pictureBoxAsymmetrical", new Bitmap[] {Images.AsymmetricalBoard, Images.AsymmetricalBoard1 } },
     {"pictureBoxDiamond", new Bitmap[] {Images.DiamondBoard, Images.DiamondBoard1} },
+    {"buttonExit", new Bitmap[] {Images.Menu, Images.Menu1} },
 };
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -149,9 +150,9 @@ new Dictionary<string, Bitmap[]>
             ShowPanel(panelGame);
         }
 
-        private void PictureBoxStandart_MouseLeave(object sender, EventArgs e)
+        private void ButtonExit_Click(object sender, EventArgs e)
         {
-
+            ShowPanel(panelMenu);
         }
     }
 }

@@ -140,6 +140,8 @@
     <None Include="Images\DiamondBoard1.png" />
     <None Include="Images\EuropeanBoard.png" />
     <None Include="Images\EuropeanBoard1.png" />
+    <None Include="Images\Menu.png" />
+    <None Include="Images\Menu1.png" />
     <Content Include="Images\PegSolitaire.png" />
     <None Include="Images\SelectField1.png" />
     <None Include="Resources\PegSolitaire.png" />
