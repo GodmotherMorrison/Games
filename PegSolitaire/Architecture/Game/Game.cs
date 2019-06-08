@@ -19,6 +19,10 @@ namespace PegSolitaire.Architecture.Game
 
         public static void CreateBoard(string board)
         {
+            var g = Graphics.FromImage(Display);
+            g.Clear(Color.Transparent);
+            g.Dispose();
+
             Board = BoardCreator.CreateBoard(board);
             _variantsOfMove = new List<Hole>();
         }

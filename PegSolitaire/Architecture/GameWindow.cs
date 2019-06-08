@@ -8,7 +8,14 @@ namespace PegSolitaire.Architecture
 {
     public partial class GameWindow : Form
     {
-        public GameWindow() => InitializeComponent();
+        public GameWindow()
+        {
+            InitializeComponent();
+
+            //WindowState = FormWindowState.Maximized;
+            //FormBorderStyle = FormBorderStyle.None;
+            //Bounds = Screen.PrimaryScreen.Bounds;
+        }
 
         private Dictionary<string, Bitmap[]> MenuButtons =
 new Dictionary<string, Bitmap[]>
