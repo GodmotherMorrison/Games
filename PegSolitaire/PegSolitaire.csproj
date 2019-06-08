@@ -61,13 +61,27 @@
     <Compile Include="Architecture\Controls\PictureBoxWithInterpolationMode.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Architecture\Game\CreatorBoard.cs" />
     <Compile Include="Architecture\Game\Hole.cs" />
     <Compile Include="Architecture\Game\Game.cs" />
     <Compile Include="Architecture\GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Architecture\GameWindow.Designer.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Architecture\GameWindowMenu.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Architecture\GameWindowBoards.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Architecture\GameWindowGameBoard.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Architecture\Game\CreatorBoard.cs">
       <DependentUpon>GameWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Architecture\Game\Peg.cs" />
