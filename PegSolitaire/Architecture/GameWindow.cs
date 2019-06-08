@@ -12,6 +12,8 @@ namespace PegSolitaire.Architecture
         {
             InitializeComponent();
 
+            Game.Game.StringBoard = BoardCreator.Standard;
+
             WindowState = FormWindowState.Maximized;
             FormBorderStyle = FormBorderStyle.None;
             Bounds = Screen.PrimaryScreen.Bounds;
@@ -95,7 +97,7 @@ new Dictionary<string, Bitmap[]>
         private void PictureBoxNewGame_Click(object sender, EventArgs e)
         {
             pictureBox1.Image = null;
-            Game.Game.CreateBoard(BoardCreator.Standard);
+            Game.Game.CreateBoard(Game.Game.StringBoard);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
             ShowPanel(panelGame);
         }
@@ -110,13 +112,14 @@ new Dictionary<string, Bitmap[]>
             ((PictureBox)sender).Image = MenuButtons[((PictureBox)sender).Name][0];
         }
 
-        private void PictureBoxSelectField_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBoxSelectField_Click(object sender, EventArgs e)
         {
             ShowPanel(panelBoards);
         }
 
         private void PictureBoxStandart_Click(object sender, EventArgs e)
         {
+            Game.Game.StringBoard = BoardCreator.Standard;
             Game.Game.CreateBoard(BoardCreator.Standard);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
             ShowPanel(panelGame);
@@ -124,6 +127,7 @@ new Dictionary<string, Bitmap[]>
 
         private void PictureBoxEuropean_Click(object sender, EventArgs e)
         {
+            Game.Game.StringBoard = BoardCreator.European;
             Game.Game.CreateBoard(BoardCreator.European);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
             ShowPanel(panelGame);
@@ -131,6 +135,7 @@ new Dictionary<string, Bitmap[]>
 
         private void PictureBoxAsymmetrical_Click(object sender, EventArgs e)
         {
+            Game.Game.StringBoard = BoardCreator.Asymmetrical;
             Game.Game.CreateBoard(BoardCreator.Asymmetrical);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
             ShowPanel(panelGame);
@@ -138,6 +143,7 @@ new Dictionary<string, Bitmap[]>
 
         private void PictureBoxWiegleb_Click(object sender, EventArgs e)
         {
+            Game.Game.StringBoard = BoardCreator.Wiegleb;
             Game.Game.CreateBoard(BoardCreator.Wiegleb);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
             ShowPanel(panelGame);
@@ -145,6 +151,7 @@ new Dictionary<string, Bitmap[]>
 
         private void PictureBoxDiamond_Click(object sender, EventArgs e)
         {
+            Game.Game.StringBoard = BoardCreator.Diamond;
             Game.Game.CreateBoard(BoardCreator.Diamond);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
             ShowPanel(panelGame);

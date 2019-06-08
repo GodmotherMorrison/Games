@@ -12,8 +12,10 @@ namespace PegSolitaire.Architecture.Game
         public static Position WinPoint;
         public static int SizeOfDisplay;
         public static Image Display;
+        public static string StringBoard;
         private static List<Hole> _variantsOfMove;
         private static Peg _selectedPeg;
+
 
         public static int NumberOfCells => Board.GetLength(0);
 
