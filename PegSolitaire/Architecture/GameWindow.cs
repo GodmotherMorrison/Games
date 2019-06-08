@@ -24,6 +24,11 @@ new Dictionary<string, Bitmap[]>
     {"pictureBoxNewGame", new Bitmap[] {Images.NewGame, Images.NewGame1 } },
     {"pictureBoxSelectField", new Bitmap[] {Images.SelectField, Images.SelectField1} },
     {"pictureBoxExit", new Bitmap[] {Images.Exit, Images.Exit1} },
+    {"pictureBoxStandart", new Bitmap[] {Images.StandartBoard, Images.StandartBoard1} },
+    {"pictureBoxEuropean", new Bitmap[] {Images.EuropeanBoard, Images.EuropeanBoard1} },
+    {"pictureBoxWiegleb", new Bitmap[] {Images.WieglebBoard, Images.WieglebBoard1} },
+    {"pictureBoxAsymmetrical", new Bitmap[] {Images.AsymmetricalBoard, Images.AsymmetricalBoard1 } },
+    {"pictureBoxDiamond", new Bitmap[] {Images.DiamondBoard, Images.DiamondBoard1} },
 };
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -142,6 +147,11 @@ new Dictionary<string, Bitmap[]>
             Game.Game.CreateBoard(BoardCreator.Diamond);
             pictureBox1.Image = Game.Game.GetDrawnBoard();
             ShowPanel(panelGame);
+        }
+
+        private void PictureBoxStandart_MouseLeave(object sender, EventArgs e)
+        {
+
         }
     }
 }

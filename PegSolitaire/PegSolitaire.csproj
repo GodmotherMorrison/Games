@@ -127,9 +127,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="32.ico" />
+    <None Include="Images\WieglebBoard1.png" />
+    <None Include="Images\WieglebBoard.png" />
+    <None Include="Images\StandartBoard1.png" />
+    <None Include="Images\StandartBoard.png" />
     <None Include="Images\Play1.png" />
     <None Include="Images\Exit1.png" />
     <None Include="Images\NewGame1.png" />
+    <None Include="Images\AsymmetricalBoard.png" />
+    <None Include="Images\AsymmetricalBoard1.png" />
+    <None Include="Images\DiamondBoard.png" />
+    <None Include="Images\DiamondBoard1.png" />
+    <None Include="Images\EuropeanBoard.png" />
+    <None Include="Images\EuropeanBoard1.png" />
     <Content Include="Images\PegSolitaire.png" />
     <None Include="Images\SelectField1.png" />
     <None Include="Resources\PegSolitaire.png" />
