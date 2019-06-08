@@ -143,16 +143,6 @@ namespace PegSolitaire {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GameOver {
-            get {
-                object obj = ResourceManager.GetObject("GameOver", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap hole {
             get {
                 object obj = ResourceManager.GetObject("hole", resourceCulture);
@@ -316,16 +306,6 @@ namespace PegSolitaire {
         internal static System.Drawing.Bitmap WieglebBoard1 {
             get {
                 object obj = ResourceManager.GetObject("WieglebBoard1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap YouWon {
-            get {
-                object obj = ResourceManager.GetObject("YouWon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

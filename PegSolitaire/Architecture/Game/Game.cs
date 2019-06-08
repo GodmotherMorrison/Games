@@ -12,26 +12,19 @@ namespace PegSolitaire.Architecture.Game
         public static Position WinPoint;
         public static int SizeOfDisplay;
         public static Image Display;
-        public static string StringBoard { get; private set; }
+        public static string StringBoard;
         private static List<Hole> _variantsOfMove;
         private static Peg _selectedPeg;
 
 
         public static int NumberOfCells => Board.GetLength(0);
 
-        public static void ClearBoard()
+        public static void CreateBoard(string board)
         {
-            _selectedPeg = null;
-            _variantsOfMove = new List<Hole>();
-
             var g = Graphics.FromImage(Display);
             g.Clear(Color.Transparent);
             g.Dispose();
-        }
 
-        public static void CreateBoard(string board)
-        {
-            StringBoard = board;
             Board = BoardCreator.CreateBoard(board);
             _variantsOfMove = new List<Hole>();
         }
@@ -105,6 +98,7 @@ namespace PegSolitaire.Architecture.Game
             if (!TryGetLocationOnBoard(ref location, displaySize))
                 return;
             var position = ConvertToPosition(location);
+            if (position.I >= NumberOfCells || position.J >= NumberOfCells) return;
 
             SelectNewPeg(position);
             CheckVariantsOfMove(position);
