@@ -10,14 +10,19 @@ namespace FloodIt
     {
         public Bitmap Display { get; set; }
         public int Size { get; set; }
-        private int sizeOfCell = 20; ///20 ??? why is twenty
+        private int sizeOfCell = 20;
 
         public Color[] ColorSet ///fix pallete
         {
             get
             {
-                return new Color[] {Color.Blue, Color.Green, Color.DarkBlue,
-                Color.Orange, Color.Pink, Color.Yellow };
+                return new Color[] {
+                    Color.FromArgb(74, 0, 0),
+                    Color.FromArgb(223, 0, 0),
+                    Color.FromArgb(225, 165, 169),
+                    Color.FromArgb(202, 209, 94),
+                    Color.FromArgb(42, 88, 0),
+                    Color.FromArgb(253, 116, 45) };
             }
         }
 
