@@ -6,16 +6,4 @@ Desktop puzzle-games:
 
 2. Peg Solitaire (Undertale style)
 
-   ![10Jun19121130AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/10Jun19121130AM.png)
-
-
-
-   ![10Jun19121256AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/10Jun19121236AM.png)
-
-   
-
-   ![10Jun19121305AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/10Jun19121305AM.png)
-
-   
-
-   ![10Jun19121354AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/10Jun19121354AM.png)
+   ![10Jun19121130AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/GIF22.gif)
