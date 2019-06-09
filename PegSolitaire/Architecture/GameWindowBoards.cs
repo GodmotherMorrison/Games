@@ -1,5 +1,5 @@
 ﻿using System;
-using PegSolitaire.Architecture.Rules;
+using PegSolitaire.Architecture.Logic;
 
 namespace PegSolitaire.Architecture
 {

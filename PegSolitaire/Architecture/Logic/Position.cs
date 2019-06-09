@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PegSolitaire.Architecture.Rules
+namespace PegSolitaire.Architecture.Logic
 {
     [Serializable]
     public struct Position

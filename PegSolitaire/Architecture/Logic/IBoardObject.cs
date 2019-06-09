@@ -1,4 +1,4 @@
-﻿namespace PegSolitaire.Architecture.Rules
+﻿namespace PegSolitaire.Architecture.Logic
 {
     public interface IBoardObject
     {

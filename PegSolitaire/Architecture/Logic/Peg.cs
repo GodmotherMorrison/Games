@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PegSolitaire.Architecture.Rules
+namespace PegSolitaire.Architecture.Logic
 {
     [Serializable]
     internal class Peg : IBoardObject
@@ -22,7 +22,7 @@ namespace PegSolitaire.Architecture.Rules
 
         public Position Position { get; set; }
 
-        public List<IBoardObject> GetNeighbors(Rules.Game game)
+        public List<IBoardObject> GetNeighbors(Game game)
         {
             var neighbors = new List<IBoardObject>();
 
@@ -34,7 +34,7 @@ namespace PegSolitaire.Architecture.Rules
             return neighbors;
         }
 
-        private static void AddNeighbor(Position pos, ref List<IBoardObject> neighbors, Rules.Game game)
+        private static void AddNeighbor(Position pos, ref List<IBoardObject> neighbors, Game game)
         {
             if (!OutOfMap(pos, game.NumberOfCells) && game.Board[pos.I, pos.J] is Peg)
                 neighbors.Add(game.Board[pos.I, pos.J]);
@@ -45,7 +45,7 @@ namespace PegSolitaire.Architecture.Rules
             pos.J < 0 || pos.J > numberOfCells - 1;
 
 
-        public List<Hole> GetVariantsOfMove(Rules.Game game)
+        public List<Hole> GetVariantsOfMove(Game game)
         {
             var variantsOfMove = new List<Hole>();
 

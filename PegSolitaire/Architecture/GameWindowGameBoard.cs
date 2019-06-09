@@ -12,9 +12,8 @@ namespace PegSolitaire.Architecture
             _game.UpdateBoard(e.Location, (Point)pictureBoxGameBoard.Size);
             pictureBoxGameBoard.Image = _game.Display;
 
-            if (!_game.IsOver()) return;
-
-            PrintMessage(_game.IsWin() ? Images.YouWon : Images.GameOver);
+            if (_game.IsOver())
+                PrintMessage(_game.IsWin() ? Images.YouWon : Images.GameOver);
         }
 
         private void PrintMessage(Image image)
