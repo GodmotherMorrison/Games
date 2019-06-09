@@ -52,31 +52,57 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Architecture\CreatorBoard.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="Architecture\GameLogic.cs" />
+    <Compile Include="Architecture\Controls\MButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Architecture\Controls\MButton.Designer.cs">
+      <DependentUpon>MButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Architecture\Controls\PictureBoxWithInterpolationMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Architecture\Rules\Hole.cs" />
+    <Compile Include="Architecture\Rules\Game.cs" />
     <Compile Include="Architecture\GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Architecture\GameWindow.Designer.cs">
       <DependentUpon>GameWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Architecture\ObjectsOfBoard.cs" />
-    <Compile Include="Architecture\IBoardObject.cs" />
+    <Compile Include="Architecture\GameWindowMenu.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Architecture\GameWindowBoards.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Architecture\GameWindowGameBoard.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Architecture\Rules\CreatorBoard.cs" />
+    <Compile Include="Architecture\Rules\Peg.cs" />
+    <Compile Include="Architecture\Rules\IBoardObject.cs" />
+    <Compile Include="Architecture\Rules\SerializationManager.cs" />
     <Compile Include="Images.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <Compile Include="Architecture\PositionOnBoard.cs" />
+    <Compile Include="Architecture\Rules\Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Architecture\Controls\MButton.resx">
+      <DependentUpon>MButton.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Architecture\GameWindow.resx">
       <DependentUpon>GameWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Images.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Images.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -113,18 +139,33 @@
     <None Include="Images\selectedPeg.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Icons\32.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Icons\64.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Icons\128.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="32.ico" />
-    <Content Include="Icons\16.ico" />
+    <None Include="Images\YouWon.png" />
+    <None Include="Images\WieglebBoard1.png" />
+    <None Include="Images\WieglebBoard.png" />
+    <None Include="Images\StandartBoard1.png" />
+    <None Include="Images\StandartBoard.png" />
+    <None Include="Images\Play1.png" />
+    <None Include="Images\Exit1.png" />
+    <None Include="Images\NewGame1.png" />
+    <None Include="Images\AsymmetricalBoard.png" />
+    <None Include="Images\AsymmetricalBoard1.png" />
+    <None Include="Images\DiamondBoard.png" />
+    <None Include="Images\DiamondBoard1.png" />
+    <None Include="Images\EuropeanBoard.png" />
+    <None Include="Images\EuropeanBoard1.png" />
+    <None Include="Images\Menu.png" />
+    <None Include="Images\Menu1.png" />
+    <None Include="Images\GameOver.png" />
+    <Content Include="Images\PegSolitaire.png" />
+    <None Include="Images\SelectField1.png" />
+    <None Include="Resources\PegSolitaire.png" />
+    <None Include="Images\NewGame.png" />
+    <None Include="Images\SelectField.png" />
+    <None Include="Images\Play.png" />
+    <None Include="Images\Exit.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

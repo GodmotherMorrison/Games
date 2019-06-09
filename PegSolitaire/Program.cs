@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
+using PegSolitaire.Architecture;
 
 namespace PegSolitaire
 {
-    static class Program
+    internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
