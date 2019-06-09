@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PegSolitaire.Architecture.Rules
+namespace PegSolitaire.Architecture.Logic
 {
     public static class SerializationManager
     {
@@ -24,7 +19,7 @@ namespace PegSolitaire.Architecture.Rules
             }
             catch (SerializationException e)
             {
-                Console.WriteLine("Failed to serialize. Reason: " + e.Message);
+                Console.WriteLine(@"Failed to serialize. Reason: " + e.Message);
                 throw;
             }
             finally
@@ -47,7 +42,7 @@ namespace PegSolitaire.Architecture.Rules
             }
             catch (SerializationException e)
             {
-                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                Console.WriteLine(@"Failed to deserialize. Reason: " + e.Message);
                 throw;
             }
             finally

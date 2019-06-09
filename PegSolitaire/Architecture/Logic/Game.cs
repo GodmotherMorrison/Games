@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace PegSolitaire.Architecture.Rules
+namespace PegSolitaire.Architecture.Logic
 {
     [Serializable]
     public class Game
@@ -146,7 +146,7 @@ namespace PegSolitaire.Architecture.Rules
                 DrawBoardObject(Images.hole, variant.Position.I, variant.Position.J);
         }
 
-        private void SelectBoardObject()
+        private void DrawSelectedPegAndMove()
         {
             DrawBoardObject(Images.selectedPeg, _selectedPeg.Position.I, _selectedPeg.Position.J);
 
@@ -164,7 +164,7 @@ namespace PegSolitaire.Architecture.Rules
             _selectedPeg = (Peg)Board[pos.I, pos.J];
             _variantsOfMove = _selectedPeg.GetVariantsOfMove(this);
 
-            SelectBoardObject();
+            DrawSelectedPegAndMove();
         }
 
         private Position ConvertToPosition(Point location)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace PegSolitaire.Architecture.Rules
+namespace PegSolitaire.Architecture.Logic
 {
     internal class BoardCreator
     {
