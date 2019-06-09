@@ -8,15 +8,7 @@ Desktop puzzle-games:
 
    ![10Jun19121130AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/10Jun19121130AM.png)
 
-   
 
-   ![10Jun19121139AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/10Jun19121139AM.png)
-
-   
-
-   ![10Jun19121236AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/10Jun19121151AM.png)
-
-   
 
    ![10Jun19121256AM](https://github.com/GodmotherMorrison/Games/blob/master/RedmeResx/10Jun19121236AM.png)
 
