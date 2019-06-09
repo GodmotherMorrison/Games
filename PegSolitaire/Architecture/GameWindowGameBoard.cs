@@ -5,39 +5,32 @@ using System.Windows.Forms;
 
 namespace PegSolitaire.Architecture
 {
-    public partial class GameWindow : Form
+    public partial class GameWindow
     {
         private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            Game.Game.UpdateBoard(e.Location, (Point)pictureBoxGameBoard.Size);
-            pictureBoxGameBoard.Image = Game.Game.Display;
+            _game.UpdateBoard(e.Location, (Point)pictureBoxGameBoard.Size);
+            pictureBoxGameBoard.Image = _game.Display;
 
-            if (!Game.Game.IsOver()) return;
+            if (!_game.IsOver()) return;
 
-            if (Game.Game.IsWin())
-                using (var g = Graphics.FromImage(Game.Game.Display))
-                {
-                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    var cell = new Rectangle(0, Game.Game.Display.Height / 3, Game.Game.Display.Width,
-                        Game.Game.Display.Height / 3);
-                    g.DrawImage(Images.YouWon, cell);
-                }
-            else
-                using (var g = Graphics.FromImage(Game.Game.Display))
-                {
-                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    var cell = new Rectangle(0, Game.Game.Display.Height / 3, Game.Game.Display.Width,
-                        Game.Game.Display.Height / 3);
-                    g.DrawImage(Images.GameOver, cell);
-                }
+            PrintMessage(_game.IsWin() ? Images.YouWon : Images.GameOver);
         }
 
-        private void PictureBox1_SizeChanged(object sender, EventArgs e)
+        private void PrintMessage(Image image)
         {
-            Game.Game.SizeOfDisplay = (pictureBoxGameBoard.Width > pictureBoxGameBoard.Height) ? pictureBoxGameBoard.Height : pictureBoxGameBoard.Width;
+            using (var g = Graphics.FromImage(_game.Display))
+            {
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                var cell = new Rectangle(0, _game.Display.Height / 3, _game.Display.Width,
+                    _game.Display.Height / 3);
+                g.DrawImage(image, cell);
+            }
         }
 
+        private void PictureBox1_SizeChanged(object sender, EventArgs e) => 
+            _game.SizeOfDisplay = (pictureBoxGameBoard.Width > pictureBoxGameBoard.Height) ? 
+                pictureBoxGameBoard.Height : pictureBoxGameBoard.Width;
     }
 }

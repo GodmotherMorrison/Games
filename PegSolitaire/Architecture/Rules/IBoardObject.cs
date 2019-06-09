@@ -1,4 +1,4 @@
-﻿namespace PegSolitaire.Architecture.Game
+﻿namespace PegSolitaire.Architecture.Rules
 {
     public interface IBoardObject
     {

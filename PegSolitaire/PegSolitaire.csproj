@@ -61,8 +61,8 @@
     <Compile Include="Architecture\Controls\PictureBoxWithInterpolationMode.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Architecture\Game\Hole.cs" />
-    <Compile Include="Architecture\Game\Game.cs" />
+    <Compile Include="Architecture\Rules\Hole.cs" />
+    <Compile Include="Architecture\Rules\Game.cs" />
     <Compile Include="Architecture\GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,17 +81,16 @@
       <DependentUpon>GameWindow.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Architecture\Game\CreatorBoard.cs">
-      <DependentUpon>GameWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Architecture\Game\Peg.cs" />
-    <Compile Include="Architecture\Game\IBoardObject.cs" />
+    <Compile Include="Architecture\Rules\CreatorBoard.cs" />
+    <Compile Include="Architecture\Rules\Peg.cs" />
+    <Compile Include="Architecture\Rules\IBoardObject.cs" />
+    <Compile Include="Architecture\Rules\SerializationManager.cs" />
     <Compile Include="Images.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Images.resx</DependentUpon>
     </Compile>
-    <Compile Include="Architecture\Game\Position.cs" />
+    <Compile Include="Architecture\Rules\Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Architecture\Controls\MButton.resx">

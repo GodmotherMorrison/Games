@@ -1,5 +1,8 @@
-﻿namespace PegSolitaire.Architecture.Game
+﻿using System;
+
+namespace PegSolitaire.Architecture.Rules
 {
+    [Serializable]
     public struct Position
     {
         public int I;

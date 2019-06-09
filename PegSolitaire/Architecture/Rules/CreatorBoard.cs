@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-namespace PegSolitaire.Architecture.Game
+namespace PegSolitaire.Architecture.Rules
 {
     internal class BoardCreator
     {
-        public static IBoardObject[,] CreateBoard(string board, string separator = "\r\n")
+        public static IBoardObject[,] CreateBoard(string board, ref Position winPoint, string separator = "\r\n")
         {
             var rows = board.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
             if (rows.Select(z => z.Length).Distinct().Count() != 1)
@@ -13,11 +13,11 @@ namespace PegSolitaire.Architecture.Game
             var result = new IBoardObject[rows[0].Length, rows.Length];
             for (var x = 0; x < rows[0].Length; x++)
                 for (var y = 0; y < rows.Length; y++)
-                    result[x, y] = ParseBySymbol(rows[x][y], x, y);
+                    result[x, y] = ParseBySymbol(rows[x][y], x, y, ref winPoint);
             return result;
         }
 
-        private static IBoardObject ParseBySymbol(char c, int i, int j)
+        private static IBoardObject ParseBySymbol(char c, int i, int j, ref Position winPoint)
         {
             switch (c)
             {
@@ -27,7 +27,7 @@ namespace PegSolitaire.Architecture.Game
                     return new Peg(i, j);
                 case '#':
                     {
-                        Game.WinPoint = new Position(i, j);
+                        winPoint = new Position(i, j);
                         return new Hole(i, j);
                     }
                 default:

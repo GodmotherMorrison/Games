@@ -17,8 +17,8 @@ namespace PegSolitaire.Architecture
         private void PictureBoxNewGame_Click(object s, EventArgs e)
         {
             pictureBoxGameBoard.Image = null;
-            Game.Game.CreateBoard(Game.Game.StringBoard);
-            pictureBoxGameBoard.Image = Game.Game.GetDrawnBoard();
+            _game.CreateBoard(_game.LastBoardSelection);
+            pictureBoxGameBoard.Image = _game.GetDrawnBoard();
             ShowPanel(panelGame);
         }
         private void PictureBoxSelectField_Click(object s, EventArgs e) => ShowPanel(panelBoards);

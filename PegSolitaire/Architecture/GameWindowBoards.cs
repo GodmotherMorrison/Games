@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Windows.Forms;
-using PegSolitaire.Architecture.Game;
+using PegSolitaire.Architecture.Rules;
 
 namespace PegSolitaire.Architecture
 {
-    public partial class GameWindow : Form
+    public partial class GameWindow
     {
         private void SelectBoard(string board)
         {
-            Game.Game.ClearBoard();
-            Game.Game.CreateBoard(board);
-            pictureBoxGameBoard.Image = Game.Game.GetDrawnBoard();
+            _game.ClearBoard();
+            _game.CreateBoard(board);
+            pictureBoxGameBoard.Image = _game.GetDrawnBoard();
             ShowPanel(panelGame);
         }
 

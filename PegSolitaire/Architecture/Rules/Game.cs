@@ -1,36 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace PegSolitaire.Architecture.Game
+namespace PegSolitaire.Architecture.Rules
 {
-    public static class Game
+    [Serializable]
+    public class Game
     {
-        public static IBoardObject[,] Board;
-        public static Position WinPoint;
-        public static int SizeOfDisplay;
-        public static Image Display;
-        public static string StringBoard;
-        private static List<Hole> _variantsOfMove;
-        private static Peg _selectedPeg;
+        public IBoardObject[,] Board;
+        public Position WinPoint;
+        public int SizeOfDisplay;
+        public Image Display;
+        public string LastBoardSelection;
+        private List<Hole> _variantsOfMove;
+        private Peg _selectedPeg;
 
-        public static int NumberOfCells => Board.GetLength(0);
-
-        public static void CreateBoard(string board)
+        public Game()
         {
-            StringBoard = board;
+            SetSizeOfDisplay();
+            CreateBoard(BoardCreator.Standard);
+        }
+
+        public int NumberOfCells => Board.GetLength(0);
+
+        public void CreateBoard(string board)
+        {
+            LastBoardSelection = board;
 
             var g = Graphics.FromImage(Display);
             g.Clear(Color.Transparent);
             g.Dispose();
 
-            Board = BoardCreator.CreateBoard(board);
+            Board = BoardCreator.CreateBoard(board, ref WinPoint);
             _variantsOfMove = new List<Hole>();
         }
 
-        public static void ClearBoard()
+        public void ClearBoard()
         {
             _selectedPeg = null;
             _variantsOfMove = new List<Hole>();
@@ -40,27 +48,26 @@ namespace PegSolitaire.Architecture.Game
             g.Dispose();
         }
 
-        public static void SetSizeOfDisplay(int size)
+        public void SetSizeOfDisplay()
         {
-            SizeOfDisplay = size;
             Display = new Bitmap(GetSize(), GetSize());
         }
 
-        public static int GetSize() => Screen.PrimaryScreen.Bounds.Height < Screen.PrimaryScreen.Bounds.Width ?
+        public int GetSize() => Screen.PrimaryScreen.Bounds.Height < Screen.PrimaryScreen.Bounds.Width ?
                                        Screen.PrimaryScreen.Bounds.Height : Screen.PrimaryScreen.Bounds.Width;
 
-        private static int GetSizeOfCell() => GetSize() / NumberOfCells;
+        private int GetSizeOfCell() => GetSize() / NumberOfCells;
 
-        public static bool IsOver()
+        public bool IsOver()
         {
             for (var i = 0; i < NumberOfCells; i++)
                 for (var j = 0; j < NumberOfCells; j++)
-                    if (Board[i, j] is Peg && ((Peg)Board[i, j]).GetVariantsOfMove().Count != 0)
+                    if (Board[i, j] is Peg && ((Peg)Board[i, j]).GetVariantsOfMove(this).Count != 0)
                         return false;
             return true;
         }
 
-        public static bool IsWin()
+        public bool IsWin()
         {
             var pegs = new List<Peg>();
             for (var i = 0; i < NumberOfCells; i++)
@@ -70,7 +77,7 @@ namespace PegSolitaire.Architecture.Game
             return (pegs.Count == 1 && pegs[0].Position.Equals(WinPoint));
         }
 
-        public static Image GetDrawnBoard()
+        public Image GetDrawnBoard()
         {
             for (var i = 0; i < NumberOfCells; i++)
                 for (var j = 0; j < NumberOfCells; j++)
@@ -86,7 +93,7 @@ namespace PegSolitaire.Architecture.Game
             return Display;
         }
 
-        private static void DrawBoardObject(Image img, int i, int j)
+        private void DrawBoardObject(Image img, int i, int j)
         {
             using (var g = Graphics.FromImage(Display))
             {
@@ -97,14 +104,14 @@ namespace PegSolitaire.Architecture.Game
             }
         }
 
-        private static void CreateBoardObj(Image img, IBoardObject obj, Position pos)
+        private void CreateBoardObj(Image img, IBoardObject obj, Position pos)
         {
             obj.Position = new Position(pos.I, pos.J);
             Board[pos.I, pos.J] = obj;
             DrawBoardObject(img, pos.I, pos.J);
         }
 
-        public static void UpdateBoard(Point location, Point displaySize)
+        public void UpdateBoard(Point location, Point displaySize)
         {
             if (!TryGetLocationOnBoard(ref location, displaySize))
                 return;
@@ -115,7 +122,7 @@ namespace PegSolitaire.Architecture.Game
             CheckVariantsOfMove(position);
         }
 
-        private static void CheckVariantsOfMove(Position pos)
+        private void CheckVariantsOfMove(Position pos)
         {
             foreach (var variant in from variant in _variantsOfMove where variant.Position.Equals(pos) select variant)
             {
@@ -130,7 +137,7 @@ namespace PegSolitaire.Architecture.Game
             }
         }
 
-        private static void ClearSelection()
+        private void ClearSelection()
         {
             if (_selectedPeg != null)
                 DrawBoardObject(Images.peg, _selectedPeg.Position.I, _selectedPeg.Position.J);
@@ -139,7 +146,7 @@ namespace PegSolitaire.Architecture.Game
                 DrawBoardObject(Images.hole, variant.Position.I, variant.Position.J);
         }
 
-        private static void SelectBoardObject()
+        private void SelectBoardObject()
         {
             DrawBoardObject(Images.selectedPeg, _selectedPeg.Position.I, _selectedPeg.Position.J);
 
@@ -147,7 +154,7 @@ namespace PegSolitaire.Architecture.Game
                 DrawBoardObject(Images.selectedHole, variant.Position.I, variant.Position.J);
         }
 
-        private static void SelectNewPeg(Position pos)
+        private void SelectNewPeg(Position pos)
         {
             ClearSelection();
 
@@ -155,12 +162,12 @@ namespace PegSolitaire.Architecture.Game
                 return;  
 
             _selectedPeg = (Peg)Board[pos.I, pos.J];
-            _variantsOfMove = _selectedPeg.GetVariantsOfMove();
+            _variantsOfMove = _selectedPeg.GetVariantsOfMove(this);
 
             SelectBoardObject();
         }
 
-        private static Position ConvertToPosition(Point location)
+        private Position ConvertToPosition(Point location)
         {
             location.X /= (SizeOfDisplay / NumberOfCells);
             location.Y /= (SizeOfDisplay / NumberOfCells);
@@ -168,7 +175,7 @@ namespace PegSolitaire.Architecture.Game
             return new Position(location.Y, location.X);
         }
 
-        private static bool TryGetLocationOnBoard(ref Point location, Point displaySize)
+        private bool TryGetLocationOnBoard(ref Point location, Point displaySize)
         {
             int x, y;
             if (displaySize.X > displaySize.Y)

@@ -2,19 +2,26 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using PegSolitaire.Architecture.Game;
+using PegSolitaire.Architecture.Rules;
 
 namespace PegSolitaire.Architecture
 {
-    public partial class GameWindow : Form
+    public partial class GameWindow
     {
+        private readonly Game _game;
+
         public GameWindow()
         {
+            _game = SerializationManager.Deserialize();
+
             InitializeComponent();
 
             WindowState = FormWindowState.Maximized;
             FormBorderStyle = FormBorderStyle.None;
             Bounds = Screen.PrimaryScreen.Bounds;
+
+            ShowPanel(panelMenu);
+            pictureBoxGameBoard.Image = _game.GetDrawnBoard();
         }
 
         private readonly Dictionary<string, Bitmap[]> _menuButtons =
@@ -31,14 +38,6 @@ namespace PegSolitaire.Architecture
                 {"pictureBoxAsymmetrical", new [] {Images.AsymmetricalBoard, Images.AsymmetricalBoard1 } },
                 {"pictureBoxDiamond", new [] {Images.DiamondBoard, Images.DiamondBoard1} }
             };
-
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-            ShowPanel(panelMenu);
-            Game.Game.SetSizeOfDisplay(pictureBoxGameBoard.Height);
-            Game.Game.CreateBoard(BoardCreator.Standard);
-            pictureBoxGameBoard.Image = Game.Game.GetDrawnBoard();
-        }
 
         private static void HideControl(Control c, bool state)
         {
@@ -65,5 +64,10 @@ namespace PegSolitaire.Architecture
         private void PictureBox_MouseEnter(object sender, EventArgs e) => ((PictureBox)sender).Image = _menuButtons[((PictureBox)sender).Name][1];
 
         private void PictureBox_MouseLeave(object sender, EventArgs e) => ((PictureBox)sender).Image = _menuButtons[((PictureBox)sender).Name][0];
+
+        private void GameWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SerializationManager.Serialize(_game);
+        }
     }
 }

@@ -101,9 +101,9 @@ namespace PegSolitaire.Architecture
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel.BackColor = System.Drawing.Color.Black;
-            this.panel.Controls.Add(this.panelBoards);
             this.panel.Controls.Add(this.panelMenu);
             this.panel.Controls.Add(this.panelGame);
+            this.panel.Controls.Add(this.panelBoards);
             this.panel.Location = new System.Drawing.Point(3, 119);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(635, 459);
@@ -463,7 +463,7 @@ namespace PegSolitaire.Architecture
             this.Name = "GameWindow";
             this.Text = "Peg Solitaire";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Shown += new System.EventHandler(this.Form1_Shown);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameWindow_FormClosing);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GameWindow_KeyPress);
             this.tableLayoutPanel.ResumeLayout(false);
             this.panel.ResumeLayout(false);
