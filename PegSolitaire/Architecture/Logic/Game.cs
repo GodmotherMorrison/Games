@@ -122,10 +122,17 @@ namespace PegSolitaire.Architecture.Logic
             CheckVariantsOfMove(position);
         }
 
-        public void UpdateBoard(Position position, Point displaySize)
+        public Peg UpdateBoard(Position position, Point displaySize)
         {
             SelectNewPeg(position);
             CheckVariantsOfMove(position);
+
+            var nextPeg = new Peg(_variantsOfMove[0].Position);
+
+            SelectNewPeg(position);
+            CheckVariantsOfMove(position);
+
+            return nextPeg;
         }
 
         private void CheckVariantsOfMove(Position pos)
