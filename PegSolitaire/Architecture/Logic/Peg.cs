@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace PegSolitaire.Architecture.Logic
 {
     [Serializable]
-    internal class Peg : IBoardObject
+    public class Peg : IBoardObject
     {
         public Peg()
         {

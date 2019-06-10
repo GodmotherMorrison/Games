@@ -15,7 +15,7 @@ namespace PegSolitaire.Architecture.Logic
         public int SizeOfDisplay;
         public Image Display;
         public string LastBoardSelection;
-        private List<Hole> _variantsOfMove;
+        public List<Hole> _variantsOfMove;
         private Peg _selectedPeg;
 
         public Game()
@@ -118,6 +118,12 @@ namespace PegSolitaire.Architecture.Logic
             var position = ConvertToPosition(location);
             if (position.I >= NumberOfCells || position.J >= NumberOfCells) return;
 
+            SelectNewPeg(position);
+            CheckVariantsOfMove(position);
+        }
+
+        public void UpdateBoard(Position position, Point displaySize)
+        {
             SelectNewPeg(position);
             CheckVariantsOfMove(position);
         }

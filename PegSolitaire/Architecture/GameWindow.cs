@@ -10,6 +10,8 @@ namespace PegSolitaire.Architecture
     {
         private readonly Game _game;
 
+        private bool Autoplay;
+
         public GameWindow()
         {
             _game = SerializationManager.Deserialize();
@@ -56,10 +58,43 @@ namespace PegSolitaire.Architecture
 
         private void GameWindow_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (e.KeyChar == (char)48)
+            {
+                var starthole = (Hole)_game.Board[_game.WinPoint.I, _game.WinPoint.J];
+                var listMoves = starthole.GetVariantsOfMove(_game);
+
+                var position = listMoves[0].Position;
+
+                //while (!_game.IsOver())
+                {
+                    _game.UpdateBoard(position, (Point)pictureBoxGameBoard.Size);
+                    RefreshBoard();
+
+                    if (_game._variantsOfMove.Count > 0)
+                    {
+                        _game.UpdateBoard(_game._variantsOfMove[0].Position, (Point)pictureBoxGameBoard.Size);
+                    }
+                    else
+                    {
+                        //algorint
+                    }
+
+                    RefreshBoard();
+                }
+                //PrintMessage(_game.IsWin() ? Images.YouWon : Images.GameOver);
+            }
             if (e.KeyChar != (char)Keys.Escape) return;
             WindowState = FormWindowState.Maximized;
             FormBorderStyle = FormBorderStyle.Sizable;
         }
+
+        private void RefreshBoard()
+        {
+            pictureBoxGameBoard.Image = _game.Display;
+            pictureBoxGameBoard.Refresh();
+            System.Threading.Thread.Sleep(400);
+        }
+
 
         private void PictureBox_MouseEnter(object sender, EventArgs e) => ((PictureBox)sender).Image = _menuButtons[((PictureBox)sender).Name][1];
 
