@@ -111,6 +111,16 @@ namespace PegSolitaire.Architecture.Logic
             DrawBoardObject(img, pos.I, pos.J);
         }
 
+        public int amountOfPegs()
+        {
+            var pegs = new List<Peg>();
+            for (var i = 0; i < NumberOfCells; i++)
+            for (var j = 0; j < NumberOfCells; j++)
+                if (Board[i, j] is Peg)
+                    pegs.Add(new Peg(i, j));
+            return pegs.Count;
+        }
+
         public void UpdateBoard(Point location, Point displaySize)
         {
             if (!TryGetLocationOnBoard(ref location, displaySize))

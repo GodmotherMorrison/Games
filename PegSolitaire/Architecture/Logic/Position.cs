@@ -14,7 +14,7 @@ namespace PegSolitaire.Architecture.Logic
             J = j;
         }
 
-        public Position delta(int dx, int dy)
+        public Position Delta(int dx, int dy)
         {
             return new Position(I + dx, J + dy);
         }

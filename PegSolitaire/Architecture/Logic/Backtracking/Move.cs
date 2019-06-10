@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace PegSolitaire.Architecture.Logic.Backtracking
 {
-    public enum Direction { UP, DOWN, LEFT, RIGHT }
+    public enum Direction { Up, Down, Left, Right }
 
     public struct Move
     {
         public Move(Position src, Direction direction)
         {
-            this.src = src;
-            this.direction = direction;
+            Src = src;
+            Direction = direction;
         }
 
-        public Position src;
-        public Direction direction;
+        public Position Src;
+        public Direction Direction;
     }
 }

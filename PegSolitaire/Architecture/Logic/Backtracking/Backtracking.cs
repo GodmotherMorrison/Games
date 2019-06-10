@@ -1,70 +1,66 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using PegSolitaire.Architecture.Controls;
 
 namespace PegSolitaire.Architecture.Logic.Backtracking
 {
     public static class Backtracking
     {
-        public static PictureBoxWithInterpolationMode pictureBoxGameBoard;
-        private const int time = 0;
+        public static PictureBoxWithInterpolationMode PictureBoxGameBoard;
 
-        private static void RefreshBoard(Game _game)
+        private static void RefreshBoard(Game game)
         {
-            pictureBoxGameBoard.Image = _game.Display;
-            pictureBoxGameBoard.Refresh();
-            System.Threading.Thread.Sleep(200);
+            PictureBoxGameBoard.Image = game.Display;
+            PictureBoxGameBoard.Refresh();
+            Thread.Sleep(200);
         }
 
-        public static bool SolveBoard(Game game,IBoardObject[,] board, Move[] moveHistory, int depth)
+        public static bool SolveBoard(Game game, Move[] moveHistory, int depth)
         {
-            if (game.IsOver())
-                return game.IsWin();
+            if (game.amountOfPegs() == 1)
+                return game.Board[game.WinPoint.I,game.WinPoint.J] is Peg;
 
             for (var x = 0; x < game.NumberOfCells; x++)
             {
                 for (var y = 0; y < game.NumberOfCells; y++)
                 {
-                    if (!(board[x, y] is Peg)) continue;
-                    var oldBoard = board;
-                    var position = new Position(x, y);
+                    if (!(game.Board[y, x] is Peg)) continue;
+                    var oldBoard = (IBoardObject[,])game.Board.Clone();
+
+                    var position = new Position(y, x);
                     Move move;
 
-                    if (CheckMovePossible(board, position, Direction.UP))
+                    if (CheckMovePossible(game.Board, position, Direction.Up))
                     {
-                        move = new Move(position, Direction.UP);
-                        doMove(game, move, time);
+                        move = new Move(position, Direction.Up);
+                        DoMove(game, move);
                         moveHistory[depth] = move;
-                        if (SolveBoard(game, board, moveHistory, depth + 1)) return true;
-                        board = oldBoard;
+                        if (SolveBoard(game, moveHistory, depth + 1)) return true;
+                        game.Board = (IBoardObject[,])oldBoard.Clone();
                     }
-                    if (CheckMovePossible(board, position, Direction.DOWN))
+                    if (CheckMovePossible(game.Board, position, Direction.Down))
                     {
-                        move = new Move(position, Direction.DOWN);
-                        doMove(game, move, time);
+                        move = new Move(position, Direction.Down);
+                        DoMove(game, move);
                         moveHistory[depth] = move;
-                        if (SolveBoard(game, board, moveHistory, depth + 1)) return true;
-                        board = oldBoard;
+                        if (SolveBoard(game,moveHistory, depth + 1)) return true;
+                        game.Board = (IBoardObject[,])oldBoard.Clone();
                     }
-                    if (CheckMovePossible(board, position, Direction.LEFT))
+                    if (CheckMovePossible(game.Board, position, Direction.Left))
                     {
-                        move = new Move(position, Direction.LEFT);
-                        doMove(game, move, time);
+                        move = new Move(position, Direction.Left);
+                        DoMove(game, move);
                         moveHistory[depth] = move;
-                        if (SolveBoard(game, board, moveHistory, depth + 1)) return true;
-                        board = oldBoard;
+                        if (SolveBoard(game, moveHistory, depth + 1)) return true;
+                        game.Board = (IBoardObject[,])oldBoard.Clone();
                     }
-                    if (CheckMovePossible(board, position, Direction.RIGHT))
+                    if (CheckMovePossible(game.Board, position, Direction.Right))
                     {
-                        move = new Move(position, Direction.RIGHT);
-                        doMove(game, move, time);
+                        move = new Move(position, Direction.Right);
+                        DoMove(game, move);
                         moveHistory[depth] = move;
-                        if (SolveBoard(game, board, moveHistory, depth + 1)) return true;
-                        board = oldBoard;
+                        if (SolveBoard(game, moveHistory, depth + 1)) return true;
+                        game.Board = (IBoardObject[,])oldBoard.Clone();
                     }
                 }
             }
@@ -73,37 +69,72 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
         }
 
 
-        public static void doMove(Game game, Move move, int time)
+        public static void DoMove(Game game, Move move)
         {
-            Position position = move.src;
+            var position = move.Src;
             Position middle;
             Position dst;
 
-            Direction direction = move.direction;
+            var direction = move.Direction;
 
             switch (direction)
             {
-                case Direction.LEFT:
-                    middle = position.delta(0, -1);
-                    dst = position.delta(0, -2);
+                case Direction.Up:
+                    middle = position.Delta(0, -1);
+                    dst = position.Delta(0, -2);
                     break;
-                case Direction.RIGHT:
-                    middle = position.delta(0, 1);
-                    dst = position.delta(0, 2);
+                case Direction.Down:
+                    middle = position.Delta(0, 1);
+                    dst = position.Delta(0, 2);
                     break;
-                case Direction.UP:
-                    middle = position.delta(-1, 0);
-                    dst = position.delta(-2, 0);
+                case Direction.Left:
+                    middle = position.Delta(-1, 0);
+                    dst = position.Delta(-2, 0);
                     break;
-                case Direction.DOWN:
-                    middle = position.delta(1, 0);
-                    dst = position.delta(2, 0);
+                case Direction.Right:
+                    middle = position.Delta(1, 0);
+                    dst = position.Delta(2, 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
 
-            Thread.Sleep(time);
+            game.Board[dst.I, dst.J] = new Peg();
+            game.Board[middle.I, middle.J] = new Hole();
+            game.Board[position.I, position.J] = new Hole();
+        }
+
+        public static void DoMove(Game game, Move move, int time)
+        {
+            var position = move.Src;
+            Position middle;
+            Position dst;
+
+            var direction = move.Direction;
+
+            switch (direction)
+            {
+                case Direction.Up:
+                    middle = position.Delta(0, -1);
+                    dst = position.Delta(0, -2);
+                    break;
+                case Direction.Down:
+                    middle = position.Delta(0, 1);
+                    dst = position.Delta(0, 2);
+                    break;
+                case Direction.Left:
+                    middle = position.Delta(-1, 0);
+                    dst = position.Delta(-2, 0);
+                    break;
+                case Direction.Right:
+                    middle = position.Delta(1, 0);
+                    dst = position.Delta(2, 0);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+
+            //Thread.Sleep(time);
 
             game.CreateBoardObj(Images.peg, new Peg(), dst);
             game.CreateBoardObj(Images.hole, new Hole(), middle);
@@ -118,21 +149,21 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
 
             switch (direction)
             {
-                case Direction.LEFT:
-                    middle = position.delta(0, -1);
-                    dst = position.delta(0, -2);
+                case Direction.Up:
+                    middle = position.Delta(0, -1);
+                    dst = position.Delta(0, -2);
                     break;
-                case Direction.RIGHT:
-                    middle = position.delta(0, 1);
-                    dst = position.delta(0, 2);
+                case Direction.Down:
+                    middle = position.Delta(0, 1);
+                    dst = position.Delta(0, 2);
                     break;
-                case Direction.UP:
-                    middle = position.delta(-1, 0);
-                    dst = position.delta(-2, 0);
+                case Direction.Left:
+                    middle = position.Delta(-1, 0);
+                    dst = position.Delta(-2, 0);
                     break;
-                case Direction.DOWN:
-                    middle = position.delta(1, 0);
-                    dst = position.delta(2, 0);
+                case Direction.Right:
+                    middle = position.Delta(1, 0);
+                    dst = position.Delta(2, 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
@@ -153,11 +184,6 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
             if (pos.I < 0 || pos.I > board.GetLength(0) - 1 ||
                 pos.J < 0 || pos.J > board.GetLength(0) - 1) return false;
             return (board[pos.I, pos.J] is Hole);
-        }
-
-        private static bool IsPeg(IBoardObject[,] board, Position dst)
-        {
-            return board[dst.I, dst.J] is Peg;
         }
     }
 }
