@@ -61,6 +61,8 @@
     <Compile Include="Architecture\Controls\PictureBoxWithInterpolationMode.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Architecture\Logic\Backtracking\Backtracking.cs" />
+    <Compile Include="Architecture\Logic\Backtracking\Move.cs" />
     <Compile Include="Architecture\Logic\Hole.cs" />
     <Compile Include="Architecture\Logic\Game.cs" />
     <Compile Include="Architecture\GameWindow.cs">

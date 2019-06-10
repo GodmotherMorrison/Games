@@ -104,7 +104,7 @@ namespace PegSolitaire.Architecture.Logic
             }
         }
 
-        private void CreateBoardObj(Image img, IBoardObject obj, Position pos)
+        public void CreateBoardObj(Image img, IBoardObject obj, Position pos)
         {
             obj.Position = new Position(pos.I, pos.J);
             Board[pos.I, pos.J] = obj;
@@ -120,19 +120,6 @@ namespace PegSolitaire.Architecture.Logic
 
             SelectNewPeg(position);
             CheckVariantsOfMove(position);
-        }
-
-        public Peg UpdateBoard(Position position, Point displaySize)
-        {
-            SelectNewPeg(position);
-            CheckVariantsOfMove(position);
-
-            var nextPeg = new Peg(_variantsOfMove[0].Position);
-
-            SelectNewPeg(position);
-            CheckVariantsOfMove(position);
-
-            return nextPeg;
         }
 
         private void CheckVariantsOfMove(Position pos)

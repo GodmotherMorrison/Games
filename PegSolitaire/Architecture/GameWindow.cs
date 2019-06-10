@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using PegSolitaire.Architecture.Logic;
+using PegSolitaire.Architecture.Logic.Backtracking;
 
 namespace PegSolitaire.Architecture
 {
@@ -60,30 +61,18 @@ namespace PegSolitaire.Architecture
         {
             if (e.KeyChar == (char)48)
             {
-                var starthole = (Hole)_game.Board[_game.WinPoint.I, _game.WinPoint.J];
-                var listMoves = starthole.GetVariantsOfMove(_game);
+                var board = _game.Board;
+                var moveHistory = new Move[40];
+                Backtracking.pictureBoxGameBoard = pictureBoxGameBoard;
+                Backtracking.SolveBoard(_game, board, moveHistory, 0);
 
-                var position = listMoves[0].Position;
+                for (var i = 0; i < 31; i++)
+                    Backtracking.doMove(_game, moveHistory[i], 100);
 
-                //while (!_game.IsOver())
-                {
-                    _game.UpdateBoard(position, (Point)pictureBoxGameBoard.Size);
-                    RefreshBoard();
-
-                    if (_game._variantsOfMove.Count > 0)
-                    {
-                        _game.UpdateBoard(_game._variantsOfMove[0].Position, (Point)pictureBoxGameBoard.Size);
-                    }
-                    else
-                    {
-                        //algorint
-                    }
-
-                    RefreshBoard();
-                }
-                //PrintMessage(_game.IsWin() ? Images.YouWon : Images.GameOver);
+                PrintMessage(_game.IsWin() ? Images.YouWon : Images.GameOver);
             }
-            if (e.KeyChar != (char)Keys.Escape) return;
+
+            if (e.KeyChar != (char) Keys.Escape) return;
             WindowState = FormWindowState.Maximized;
             FormBorderStyle = FormBorderStyle.Sizable;
         }
@@ -92,9 +81,8 @@ namespace PegSolitaire.Architecture
         {
             pictureBoxGameBoard.Image = _game.Display;
             pictureBoxGameBoard.Refresh();
-            System.Threading.Thread.Sleep(400);
+            System.Threading.Thread.Sleep(200);
         }
-
 
         private void PictureBox_MouseEnter(object sender, EventArgs e) => ((PictureBox)sender).Image = _menuButtons[((PictureBox)sender).Name][1];
 
