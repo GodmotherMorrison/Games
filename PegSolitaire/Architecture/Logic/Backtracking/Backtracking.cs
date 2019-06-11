@@ -69,8 +69,7 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
                         if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
                         board.UndoMove(move);
                     }
-
-                    if (board.CheckMovePossible(position, Direction.Down))
+                    else if (board.CheckMovePossible(position, Direction.Down))
                     {
                         move = new Move(position, Direction.Down);
                         board.DoMove(move);
@@ -78,8 +77,7 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
                         if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
                         board.UndoMove(move);
                     }
-
-                    if (board.CheckMovePossible(position, Direction.Left))
+                    else if (board.CheckMovePossible(position, Direction.Left))
                     {
                         move = new Move(position, Direction.Left);
                         board.DoMove(move);
@@ -87,8 +85,7 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
                         if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
                         board.UndoMove(move);
                     }
-
-                    if (board.CheckMovePossible(position, Direction.Right))
+                    else if (board.CheckMovePossible(position, Direction.Right))
                     {
                         move = new Move(position, Direction.Right);
                         board.DoMove(move);
@@ -147,7 +144,6 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
             return board[pos.I,pos.J];
         }
 
-
         private static void Position(Position position, out Position middle, out Position dst, Direction direction)
         {
             switch (direction)
@@ -171,20 +167,6 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
                 default:
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
-        }
-
-        private static bool PegOnMap(bool[,] board, Position pos)
-        {
-            if (pos.I < 0 || pos.I >= CellCount ||
-                pos.J < 0 || pos.J >= CellCount) return false;
-            return (board[pos.I, pos.J] && !_mask[pos.I, pos.J]);
-        }
-
-        private static bool HoleOnMap(bool[,] board, Position pos)
-        {
-            if (pos.I < 0 || pos.I >= CellCount ||
-                pos.J < 0 || pos.J >= CellCount) return false;
-            return (board[pos.I, pos.J] == false && !_mask[pos.I, pos.J]);
         }
     }
 }
