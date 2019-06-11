@@ -7,20 +7,15 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
     public static class Backtracking
     {
         public static PictureBoxWithInterpolationMode PictureBoxGameBoard;
-
+        public static int CellCount;
         private static bool[,] _mask;
-
-        public enum CellState
-        {
-            Null, Peg, Hole
-        }
 
         public static bool[,] ToCellStates(IBoardObject[,] board)
         {
-            var cellBoard = new bool[board.GetLength(0), board.GetLength(1)];
-            _mask = new bool[board.GetLength(0), board.GetLength(1)];
+            var cellBoard = new bool[board.GetLength(0), board.GetLength(0)];
+            _mask = new bool[board.GetLength(0), board.GetLength(0)];
             for (var x = 0; x < board.GetLength(0); x++)
-                for (var y = 0; y < board.GetLength(1); y++)
+                for (var y = 0; y < board.GetLength(0); y++)
                     switch (board[x, y])
                 {
                     case Peg _:
@@ -40,8 +35,8 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
         private static int GetAmountOfPegs(this bool[,] board)
         {
             var count = 0;
-            for (var x = 0; x < board.GetLength(0); x++)
-                for (var y = 0; y < board.GetLength(1); y++)
+            for (var x = 0; x < CellCount; x++)
+                for (var y = 0; y < CellCount; y++)
                     if (board[x, y]) count++;
             return count;
         }
@@ -58,55 +53,55 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
             if (board.GetAmountOfPegs() == 1)
                 return board[winPoint.I, winPoint.J];
 
-            for (var x = 0; x < board.GetLength(0); x++)
-                for (var y = 0; y < board.GetLength(1); y++)
+            for (var x = 0; x < CellCount; x++)
+                for (var y = 0; y < CellCount; y++)
                 {
                     if (board[y, x] != true) continue;
 
                     var position = new Position(y, x);
                     Move move;
 
-                    if (CheckMovePossible(board, position, Direction.Up))
+                    if (board.CheckMovePossible(position, Direction.Up))
                     {
                         move = new Move(position, Direction.Up);
-                        DoMove(board, move);
+                        board.DoMove(move);
                         moveHistory[depth] = move;
                         if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
-                        UndoMove(board, move);
+                        board.UndoMove(move);
                     }
 
-                    if (CheckMovePossible(board, position, Direction.Down))
+                    if (board.CheckMovePossible(position, Direction.Down))
                     {
                         move = new Move(position, Direction.Down);
-                        DoMove(board, move);
+                        board.DoMove(move);
                         moveHistory[depth] = move;
                         if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
-                        UndoMove(board, move);
+                        board.UndoMove(move);
                     }
 
-                    if (CheckMovePossible(board, position, Direction.Left))
+                    if (board.CheckMovePossible(position, Direction.Left))
                     {
                         move = new Move(position, Direction.Left);
-                        DoMove(board, move);
+                        board.DoMove(move);
                         moveHistory[depth] = move;
                         if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
-                        UndoMove(board, move);
+                        board.UndoMove(move);
                     }
 
-                    if (CheckMovePossible(board, position, Direction.Right))
+                    if (board.CheckMovePossible(position, Direction.Right))
                     {
                         move = new Move(position, Direction.Right);
-                        DoMove(board, move);
+                        board.DoMove(move);
                         moveHistory[depth] = move;
                         if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
-                        UndoMove(board, move);
+                        board.UndoMove(move);
                     }
                 }
 
             return false;
         }
 
-        public static void UndoMove(bool[,] board, Move move)
+        public static void UndoMove(this bool[,] board, Move move)
         {
             Position(move.Src, out var middle, out var dst, move.Direction);
 
@@ -115,7 +110,7 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
             board[move.Src.I, move.Src.J] = true;
         }
 
-        public static void DoMove(bool[,] board, Move move)
+        public static void DoMove(this bool[,] board, Move move)
         {
             Position(move.Src, out var middle, out var dst, move.Direction);
 
@@ -134,11 +129,22 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
             RefreshBoard(game);
         }
 
-        private static bool CheckMovePossible(bool[,] board, Position position, Direction direction)
+        private static bool CheckMovePossible(this bool[,] board, Position position, Direction direction)
         {
             Position(position, out var middle, out var dst, direction);
 
-            return PegOnMap(board, position) && PegOnMap(board, middle) && HoleOnMap(board, dst);
+            return InsideField(dst) && InsideField(middle) && board.GetValue(middle) && !board.GetValue(dst);
+        }
+
+        private static bool InsideField(Position pos)
+        {
+            if (pos.I < 0 || pos.I >= CellCount || pos.J < 0 || pos.J >= CellCount) return false;
+            return !_mask[pos.I, pos.J];
+        }
+
+        private static bool GetValue(this bool[,] board, Position pos)
+        {
+            return board[pos.I,pos.J];
         }
 
 
@@ -169,15 +175,15 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
 
         private static bool PegOnMap(bool[,] board, Position pos)
         {
-            if (pos.I < 0 || pos.I >= board.GetLength(0) ||
-                pos.J < 0 || pos.J >= board.GetLength(1)) return false;
+            if (pos.I < 0 || pos.I >= CellCount ||
+                pos.J < 0 || pos.J >= CellCount) return false;
             return (board[pos.I, pos.J] && !_mask[pos.I, pos.J]);
         }
 
         private static bool HoleOnMap(bool[,] board, Position pos)
         {
-            if (pos.I < 0 || pos.I >= board.GetLength(0) ||
-                pos.J < 0 || pos.J >= board.GetLength(1)) return false;
+            if (pos.I < 0 || pos.I >= CellCount ||
+                pos.J < 0 || pos.J >= CellCount) return false;
             return (board[pos.I, pos.J] == false && !_mask[pos.I, pos.J]);
         }
     }

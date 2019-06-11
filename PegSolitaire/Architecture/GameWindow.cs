@@ -65,6 +65,7 @@ namespace PegSolitaire.Architecture
                 var moveHistory = new Move[cellBoard.Length];
 
                 Backtracking.PictureBoxGameBoard = pictureBoxGameBoard;
+                Backtracking.CellCount = _game.Board.GetLength(0);
                 Backtracking.SolveBoard(cellBoard, _game.WinPoint, moveHistory, 0);
 
                 _game.Board = (IBoardObject[,])oldBoard.Clone();
