@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace PegSolitaire.Architecture.Logic.Backtracking
 {
     public enum Direction { Up, Down, Left, Right }

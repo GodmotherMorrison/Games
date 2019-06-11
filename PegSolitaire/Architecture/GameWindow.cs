@@ -60,9 +60,12 @@ namespace PegSolitaire.Architecture
             if (e.KeyChar == (char)48)
             {
                 var oldBoard = (IBoardObject[,])_game.Board.Clone();
-                var moveHistory = new Move[31];
+
+                var cellBoard = Backtracking.ToCellStates(_game.Board);
+                var moveHistory = new Move[cellBoard.Length];
+
                 Backtracking.PictureBoxGameBoard = pictureBoxGameBoard;
-                Backtracking.SolveBoard(_game, moveHistory, 0);
+                Backtracking.SolveBoard(cellBoard, _game.WinPoint, moveHistory, 0);
 
                 _game.Board = (IBoardObject[,])oldBoard.Clone();
                 foreach (var move in moveHistory)

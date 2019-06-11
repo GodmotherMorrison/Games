@@ -62,6 +62,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Architecture\Logic\Backtracking\Backtracking.cs" />
+    <Compile Include="Architecture\Logic\Backtracking\CellState.cs" />
     <Compile Include="Architecture\Logic\Backtracking\Move.cs" />
     <Compile Include="Architecture\Logic\Hole.cs" />
     <Compile Include="Architecture\Logic\Game.cs" />

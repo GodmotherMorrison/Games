@@ -8,6 +8,44 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
     {
         public static PictureBoxWithInterpolationMode PictureBoxGameBoard;
 
+        private static bool[,] _mask;
+
+        public enum CellState
+        {
+            Null, Peg, Hole
+        }
+
+        public static bool[,] ToCellStates(IBoardObject[,] board)
+        {
+            var cellBoard = new bool[board.GetLength(0), board.GetLength(1)];
+            _mask = new bool[board.GetLength(0), board.GetLength(1)];
+            for (var x = 0; x < board.GetLength(0); x++)
+                for (var y = 0; y < board.GetLength(1); y++)
+                    switch (board[x, y])
+                {
+                    case Peg _:
+                        cellBoard[x, y] = true;
+                        break;
+                    case Hole _:
+                        cellBoard[x, y] = false;
+                        break;
+                    case null:
+                        _mask[x, y] = true;
+                        break;
+                }
+
+            return cellBoard;
+        }
+
+        private static int GetAmountOfPegs(this bool[,] board)
+        {
+            var count = 0;
+            for (var x = 0; x < board.GetLength(0); x++)
+                for (var y = 0; y < board.GetLength(1); y++)
+                    if (board[x, y]) count++;
+            return count;
+        }
+
         private static void RefreshBoard(Game game)
         {
             PictureBoxGameBoard.Image = game.Display;
@@ -15,175 +53,132 @@ namespace PegSolitaire.Architecture.Logic.Backtracking
             Thread.Sleep(200);
         }
 
-        public static bool SolveBoard(Game game, Move[] moveHistory, int depth)
+        public static bool SolveBoard(bool[,] board, Position winPoint, Move[] moveHistory, int depth)
         {
-            if (game.amountOfPegs() == 1)
-                return game.Board[game.WinPoint.I,game.WinPoint.J] is Peg;
+            if (board.GetAmountOfPegs() == 1)
+                return board[winPoint.I, winPoint.J];
 
-            for (var x = 0; x < game.NumberOfCells; x++)
-            {
-                for (var y = 0; y < game.NumberOfCells; y++)
+            for (var x = 0; x < board.GetLength(0); x++)
+                for (var y = 0; y < board.GetLength(1); y++)
                 {
-                    if (!(game.Board[y, x] is Peg)) continue;
-                    var oldBoard = (IBoardObject[,])game.Board.Clone();
+                    if (board[y, x] != true) continue;
 
                     var position = new Position(y, x);
                     Move move;
 
-                    if (CheckMovePossible(game.Board, position, Direction.Up))
+                    if (CheckMovePossible(board, position, Direction.Up))
                     {
                         move = new Move(position, Direction.Up);
-                        DoMove(game, move);
+                        DoMove(board, move);
                         moveHistory[depth] = move;
-                        if (SolveBoard(game, moveHistory, depth + 1)) return true;
-                        game.Board = (IBoardObject[,])oldBoard.Clone();
+                        if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
+                        UndoMove(board, move);
                     }
-                    if (CheckMovePossible(game.Board, position, Direction.Down))
+
+                    if (CheckMovePossible(board, position, Direction.Down))
                     {
                         move = new Move(position, Direction.Down);
-                        DoMove(game, move);
+                        DoMove(board, move);
                         moveHistory[depth] = move;
-                        if (SolveBoard(game,moveHistory, depth + 1)) return true;
-                        game.Board = (IBoardObject[,])oldBoard.Clone();
+                        if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
+                        UndoMove(board, move);
                     }
-                    if (CheckMovePossible(game.Board, position, Direction.Left))
+
+                    if (CheckMovePossible(board, position, Direction.Left))
                     {
                         move = new Move(position, Direction.Left);
-                        DoMove(game, move);
+                        DoMove(board, move);
                         moveHistory[depth] = move;
-                        if (SolveBoard(game, moveHistory, depth + 1)) return true;
-                        game.Board = (IBoardObject[,])oldBoard.Clone();
+                        if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
+                        UndoMove(board, move);
                     }
-                    if (CheckMovePossible(game.Board, position, Direction.Right))
+
+                    if (CheckMovePossible(board, position, Direction.Right))
                     {
                         move = new Move(position, Direction.Right);
-                        DoMove(game, move);
+                        DoMove(board, move);
                         moveHistory[depth] = move;
-                        if (SolveBoard(game, moveHistory, depth + 1)) return true;
-                        game.Board = (IBoardObject[,])oldBoard.Clone();
+                        if (SolveBoard(board, winPoint, moveHistory, depth + 1)) return true;
+                        UndoMove(board, move);
                     }
                 }
-            }
 
             return false;
         }
 
-
-        public static void DoMove(Game game, Move move)
+        public static void UndoMove(bool[,] board, Move move)
         {
-            var position = move.Src;
-            Position middle;
-            Position dst;
+            Position(move.Src, out var middle, out var dst, move.Direction);
 
-            var direction = move.Direction;
+            board[dst.I, dst.J] = false;
+            board[middle.I, middle.J] = true;
+            board[move.Src.I, move.Src.J] = true;
+        }
 
-            switch (direction)
-            {
-                case Direction.Up:
-                    middle = position.Delta(0, -1);
-                    dst = position.Delta(0, -2);
-                    break;
-                case Direction.Down:
-                    middle = position.Delta(0, 1);
-                    dst = position.Delta(0, 2);
-                    break;
-                case Direction.Left:
-                    middle = position.Delta(-1, 0);
-                    dst = position.Delta(-2, 0);
-                    break;
-                case Direction.Right:
-                    middle = position.Delta(1, 0);
-                    dst = position.Delta(2, 0);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
-            }
+        public static void DoMove(bool[,] board, Move move)
+        {
+            Position(move.Src, out var middle, out var dst, move.Direction);
 
-            game.Board[dst.I, dst.J] = new Peg();
-            game.Board[middle.I, middle.J] = new Hole();
-            game.Board[position.I, position.J] = new Hole();
+            board[dst.I, dst.J] = true;
+            board[middle.I, middle.J] = false;
+            board[move.Src.I, move.Src.J] = false;
         }
 
         public static void DoMove(Game game, Move move, int time)
         {
-            var position = move.Src;
-            Position middle;
-            Position dst;
-
-            var direction = move.Direction;
-
-            switch (direction)
-            {
-                case Direction.Up:
-                    middle = position.Delta(0, -1);
-                    dst = position.Delta(0, -2);
-                    break;
-                case Direction.Down:
-                    middle = position.Delta(0, 1);
-                    dst = position.Delta(0, 2);
-                    break;
-                case Direction.Left:
-                    middle = position.Delta(-1, 0);
-                    dst = position.Delta(-2, 0);
-                    break;
-                case Direction.Right:
-                    middle = position.Delta(1, 0);
-                    dst = position.Delta(2, 0);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
-            }
-
-            //Thread.Sleep(time);
+            Position(move.Src, out var middle, out var dst, move.Direction);
 
             game.CreateBoardObj(Images.peg, new Peg(), dst);
             game.CreateBoardObj(Images.hole, new Hole(), middle);
-            game.CreateBoardObj(Images.hole, new Hole(), position);
+            game.CreateBoardObj(Images.hole, new Hole(), move.Src);
             RefreshBoard(game);
         }
 
-        private static bool CheckMovePossible(IBoardObject[,] board, Position position, Direction direction)
+        private static bool CheckMovePossible(bool[,] board, Position position, Direction direction)
         {
-            Position middle;
-            Position dst;
-
-            switch (direction)
-            {
-                case Direction.Up:
-                    middle = position.Delta(0, -1);
-                    dst = position.Delta(0, -2);
-                    break;
-                case Direction.Down:
-                    middle = position.Delta(0, 1);
-                    dst = position.Delta(0, 2);
-                    break;
-                case Direction.Left:
-                    middle = position.Delta(-1, 0);
-                    dst = position.Delta(-2, 0);
-                    break;
-                case Direction.Right:
-                    middle = position.Delta(1, 0);
-                    dst = position.Delta(2, 0);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
-            }
+            Position(position, out var middle, out var dst, direction);
 
             return PegOnMap(board, position) && PegOnMap(board, middle) && HoleOnMap(board, dst);
         }
 
-        private static bool PegOnMap(IBoardObject[,] board, Position pos)
+
+        private static void Position(Position position, out Position middle, out Position dst, Direction direction)
         {
-            if (pos.I < 0 || pos.I > board.GetLength(0) - 1 ||
-                pos.J < 0 || pos.J > board.GetLength(0) - 1) return false;
-            return (board[pos.I, pos.J] is Peg);
+            switch (direction)
+            {
+                case Direction.Up:
+                    middle = position.Delta(0, -1);
+                    dst = position.Delta(0, -2);
+                    break;
+                case Direction.Down:
+                    middle = position.Delta(0, 1);
+                    dst = position.Delta(0, 2);
+                    break;
+                case Direction.Left:
+                    middle = position.Delta(-1, 0);
+                    dst = position.Delta(-2, 0);
+                    break;
+                case Direction.Right:
+                    middle = position.Delta(1, 0);
+                    dst = position.Delta(2, 0);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
         }
 
-        private static bool HoleOnMap(IBoardObject[,] board, Position pos)
+        private static bool PegOnMap(bool[,] board, Position pos)
         {
-            if (pos.I < 0 || pos.I > board.GetLength(0) - 1 ||
-                pos.J < 0 || pos.J > board.GetLength(0) - 1) return false;
-            return (board[pos.I, pos.J] is Hole);
+            if (pos.I < 0 || pos.I >= board.GetLength(0) ||
+                pos.J < 0 || pos.J >= board.GetLength(1)) return false;
+            return (board[pos.I, pos.J] && !_mask[pos.I, pos.J]);
+        }
+
+        private static bool HoleOnMap(bool[,] board, Position pos)
+        {
+            if (pos.I < 0 || pos.I >= board.GetLength(0) ||
+                pos.J < 0 || pos.J >= board.GetLength(1)) return false;
+            return (board[pos.I, pos.J] == false && !_mask[pos.I, pos.J]);
         }
     }
 }
